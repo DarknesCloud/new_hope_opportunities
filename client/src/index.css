@@ -1,0 +1,360 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/**
+ * NEW HOPE OPPORTUNITIES HONDURAS — DESIGN SYSTEM
+ * Identidad visual basada en el logo institucional:
+ * Dorado Esperanza, Grafito Profundo y Blancos Cálidos.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 8px);
+  --radius-2xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-hope-gold: var(--hope-gold);
+  --color-hope-gold-dark: var(--hope-gold-dark);
+  --color-hope-gold-soft: var(--hope-gold-soft);
+  --color-hope-gold-pale: var(--hope-gold-pale);
+  --color-hope-graphite: var(--hope-graphite);
+  --color-hope-graphite-dark: var(--hope-graphite-dark);
+  --color-hope-graphite-soft: var(--hope-graphite-soft);
+  --color-hope-graphite-muted: var(--hope-graphite-muted);
+  --color-hope-ivory: var(--hope-ivory);
+  --color-hope-sand: var(--hope-sand);
+
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:root {
+  color-scheme: light;
+
+  --hope-gold: #F2B900;
+  --hope-gold-dark: #D8A100;
+  --hope-gold-soft: #FFE7A3;
+  --hope-gold-pale: #FFF7DB;
+  --hope-graphite: #343434;
+  --hope-graphite-dark: #242424;
+  --hope-graphite-soft: #5E5E5E;
+  --hope-graphite-muted: #7B7B7B;
+  --hope-ivory: #FFFDF7;
+  --hope-white: #FFFFFF;
+  --hope-sand: #FBF6EA;
+  --hope-line: rgba(52, 52, 52, 0.09);
+  --hope-line-strong: rgba(52, 52, 52, 0.14);
+
+  --primary: var(--hope-graphite);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--hope-ivory);
+  --secondary-foreground: var(--hope-graphite);
+  --accent: var(--hope-gold);
+  --accent-foreground: var(--hope-graphite);
+
+  --background: var(--hope-ivory);
+  --foreground: var(--hope-graphite);
+  --card: #FFFFFF;
+  --card-foreground: var(--hope-graphite);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--hope-graphite);
+  --muted: var(--hope-sand);
+  --muted-foreground: var(--hope-graphite-soft);
+  --border: rgba(52, 52, 52, 0.09);
+  --input: rgba(52, 52, 52, 0.06);
+  --ring: var(--hope-gold);
+
+  --chart-1: var(--hope-gold);
+  --chart-2: var(--hope-graphite);
+  --chart-3: var(--hope-gold-soft);
+  --chart-4: var(--hope-graphite-soft);
+  --chart-5: var(--hope-sand);
+
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: var(--hope-graphite);
+  --sidebar-primary: var(--hope-graphite);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: var(--hope-gold-pale);
+  --sidebar-accent-foreground: var(--hope-graphite);
+  --sidebar-border: rgba(52, 52, 52, 0.09);
+  --sidebar-ring: var(--hope-gold);
+
+  --destructive: #C94C4C;
+  --destructive-foreground: #FFFFFF;
+
+  --radius: 1.25rem;
+  --radius-card: 1.75rem;
+  --radius-section: 2.75rem;
+  --radius-pill: 999px;
+
+  --shadow-subtle: 0 12px 30px rgba(52, 52, 52, 0.06);
+  --shadow-soft: 0 18px 44px rgba(52, 52, 52, 0.10);
+  --shadow-elevated: 0 28px 70px rgba(52, 52, 52, 0.16);
+  --shadow-gold: 0 18px 42px rgba(242, 185, 0, 0.16);
+  --shadow-nav: 0 14px 38px rgba(52, 52, 52, 0.045);
+
+  --ease-premium: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.dark {
+  --background: #242424;
+  --foreground: #FFFDF7;
+  --card: #2B2B2B;
+  --card-foreground: #FFFDF7;
+  --popover: #2B2B2B;
+  --popover-foreground: #FFFDF7;
+  --primary: #FFFDF7;
+  --primary-foreground: #242424;
+  --secondary: #343434;
+  --secondary-foreground: #FFFDF7;
+  --muted: #343434;
+  --muted-foreground: #D9D0B7;
+  --accent: #F2B900;
+  --accent-foreground: #242424;
+  --destructive: #E26969;
+  --destructive-foreground: #242424;
+  --border: rgba(255, 253, 247, 0.12);
+  --input: rgba(255, 253, 247, 0.08);
+  --ring: #F2B900;
+  --sidebar: #242424;
+  --sidebar-foreground: #FFFDF7;
+  --sidebar-primary: #F2B900;
+  --sidebar-primary-foreground: #242424;
+  --sidebar-accent: #343434;
+  --sidebar-accent-foreground: #FFFDF7;
+  --sidebar-border: rgba(255, 253, 247, 0.12);
+  --sidebar-ring: #F2B900;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/40;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--background);
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    margin: 0;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgba(242, 185, 0, 0.28);
+    color: var(--hope-graphite);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--hope-graphite);
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+
+  h1 {
+    @apply text-5xl md:text-7xl;
+    font-weight: 850;
+    line-height: 0.96;
+  }
+
+  h2 {
+    @apply text-4xl md:text-6xl;
+    font-weight: 820;
+    line-height: 1.02;
+  }
+
+  h3 {
+    @apply text-2xl md:text-4xl;
+    font-weight: 780;
+    line-height: 1.12;
+  }
+
+  p {
+    @apply text-base leading-relaxed;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--hope-graphite-soft);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1200px;
+    }
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  .section-shell {
+    padding-top: clamp(5rem, 9vw, 8rem);
+    padding-bottom: clamp(5rem, 9vw, 8rem);
+  }
+
+  .editorial-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(242, 185, 0, 0.22);
+    background: rgba(242, 185, 0, 0.12);
+    color: var(--hope-graphite);
+    font-family: "Inter", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 760;
+    letter-spacing: 0.015em;
+    padding: 0.55rem 1rem;
+  }
+
+  .editorial-title {
+    font-family: "Geist", sans-serif;
+    color: var(--hope-graphite);
+    font-weight: 850;
+    letter-spacing: -0.065em;
+    line-height: 0.96;
+    text-wrap: balance;
+  }
+
+  .editorial-subtitle {
+    color: var(--hope-graphite-soft);
+    font-family: "Inter", sans-serif;
+    font-size: clamp(1.05rem, 1.45vw, 1.18rem);
+    line-height: 1.78;
+    letter-spacing: -0.01em;
+  }
+
+  .hope-card {
+    border-radius: var(--radius-card);
+    border: 1px solid var(--hope-line);
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: var(--shadow-subtle);
+    backdrop-filter: blur(14px);
+  }
+
+  .hope-card-premium {
+    border-radius: var(--radius-section);
+    border: 1px solid rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: var(--shadow-elevated);
+    backdrop-filter: blur(18px);
+  }
+
+  .hope-button-solid,
+  .hope-button-outline,
+  .hope-button-ghost {
+    min-height: 3.375rem;
+    border-radius: var(--radius-pill);
+    font-family: "Inter", sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    transition: transform 260ms var(--ease-premium), box-shadow 260ms var(--ease-premium), background-color 260ms var(--ease-premium), border-color 260ms var(--ease-premium), color 260ms var(--ease-premium);
+  }
+
+  .hope-button-solid {
+    background: var(--hope-graphite);
+    color: #FFFFFF;
+    box-shadow: 0 22px 54px rgba(52, 52, 52, 0.20);
+  }
+
+  .hope-button-solid:hover {
+    background: var(--hope-graphite-dark);
+    box-shadow: 0 28px 66px rgba(52, 52, 52, 0.28);
+    transform: translateY(-3px);
+  }
+
+  .hope-button-outline {
+    border: 1px solid rgba(242, 185, 0, 0.58);
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--hope-graphite);
+  }
+
+  .hope-button-outline:hover {
+    border-color: var(--hope-gold);
+    background: rgba(242, 185, 0, 0.12);
+    transform: translateY(-3px);
+  }
+
+  .hope-button-ghost {
+    color: var(--hope-graphite-soft);
+    background: transparent;
+  }
+
+  .hope-button-ghost:hover {
+    color: var(--hope-graphite);
+    background: rgba(52, 52, 52, 0.045);
+    transform: translateY(-3px);
+  }
+}
