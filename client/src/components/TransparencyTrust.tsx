@@ -52,8 +52,8 @@ const content = {
     eyebrow: "Transparencia verificable",
     title: "Conviértanse en una comunidad de aliados que construye esperanza.",
     subtitle:
-      "La rendición de cuentas de New Hope se presenta como una memoria institucional viva: clara, auditable y diseñada para que cada donador entienda cómo su apoyo se transforma en oportunidad educativa.",
-    heroSeal: "Fondos auditados · Trazabilidad · Gobernanza",
+      "New Hope Opportunities es una corporación sin fines de lucro 501(c)(3) constituida en Estados Unidos. Nuestra rendición de cuentas se presenta como una memoria institucional viva: clara, auditable y diseñada para que cada donador entienda cómo su apoyo se transforma en oportunidad educativa.",
+    heroSeal: "Corporación EE. UU. · Fondos auditados · Trazabilidad",
     sectionLabel: "Rendición de cuentas",
     allocationTitle: "Destino de fondos",
     allocationIntro:
@@ -66,7 +66,7 @@ const content = {
     viewReport: "Explorar reporte",
     legitimacyTitle: "Certificaciones y alianzas",
     legitimacyIntro:
-      "Señales institucionales pensadas para donadores internacionales: legalidad, auditoría, gobernanza, trazabilidad y soporte fiscal cuando aplique.",
+      "Como corporación estadounidense 501(c)(3), ofrecemos garantías institucionales clave para donadores e instituciones internacionales: legitimidad legal en EE. UU., auditoría interna/externa, gobernanza estricta y deducibilidad fiscal.",
     governanceTitle: "Gobernanza responsable",
     governanceCopy:
       "La transparencia se entiende como una práctica cotidiana: decisiones claras, uso de fondos trazable, reportes de impacto y acompañamiento de aliados que fortalecen la confianza pública.",
@@ -130,10 +130,10 @@ const content = {
     ],
     signals: [
       {
-        title: "Deducibilidad fiscal",
+        title: "Estatus 501(c)(3) EE. UU.",
         description:
-          "Soporte fiscal disponible para donadores internacionales cuando aplique, incluyendo estructura 501(c)(3) o patrocinio fiscal si corresponde.",
-        meta: "Tax support",
+          "Organización 501(c)(3) legalmente registrada en los Estados Unidos. Las donaciones son deducibles de impuestos según las leyes fiscales de EE. UU.",
+        meta: "Tax Exempt USA",
         icon: AccountBalanceRounded,
       },
       {
@@ -146,7 +146,7 @@ const content = {
       {
         title: "Registro y cumplimiento",
         description:
-          "Base legal hondureña, respaldo institucional y prácticas de cumplimiento alineadas con cooperación internacional.",
+          "Estructura legal en EE. UU. operando en estrecha colaboración y cumplimiento normativo con el marco institucional en Honduras.",
         meta: "Legal compliance",
         icon: GavelRounded,
       },
@@ -159,18 +159,18 @@ const content = {
       },
     ],
     badges: [
+      "Corporación EE. UU.",
+      "Estatus 501(c)(3)",
       "Trazabilidad",
-      "Gobernanza",
       "Uso responsable",
-      "Reportes anuales",
     ],
   },
   en: {
     eyebrow: "Verifiable transparency",
     title: "Become a community of partners building hope",
     subtitle:
-      "New Hope’s accountability is presented as a living institutional report: clear, auditable, and designed so every donor understands how support becomes educational opportunity.",
-    heroSeal: "Audited funds · Traceability · Governance",
+      "New Hope Opportunities is a U.S.-registered 501(c)(3) non-profit corporation. Our accountability is presented as a living institutional report: clear, auditable, and designed so every donor understands how support becomes educational opportunity.",
+    heroSeal: "U.S. Corporation · Audited funds · Traceability",
     sectionLabel: "Accountability",
     allocationTitle: "Use of funds",
     allocationIntro:
@@ -183,7 +183,7 @@ const content = {
     viewReport: "Explore report",
     legitimacyTitle: "Certifications and partnerships",
     legitimacyIntro:
-      "Institutional signals designed for international donors: legal standing, audit readiness, governance, traceability, and fiscal support where applicable.",
+      "As a U.S. 501(c)(3) non-profit corporation, we provide core institutional guarantees for international donors: U.S. legal standing, governance, traceability, and tax-deductible contributions.",
     governanceTitle: "Responsible governance",
     governanceCopy:
       "Transparency is treated as a daily practice: clear decisions, traceable use of funds, impact reporting, and partner accompaniment that strengthens public trust.",
@@ -247,10 +247,10 @@ const content = {
     ],
     signals: [
       {
-        title: "Tax deductibility",
+        title: "U.S. 501(c)(3) Status",
         description:
-          "Fiscal support available for international donors where applicable, including 501(c)(3) structure or fiscal sponsorship if relevant.",
-        meta: "Tax support",
+          "Legally registered 501(c)(3) non-profit corporation in the United States. Donations are tax-deductible to the extent allowed by U.S. law.",
+        meta: "Tax Exempt USA",
         icon: AccountBalanceRounded,
       },
       {
@@ -263,7 +263,7 @@ const content = {
       {
         title: "Registration and compliance",
         description:
-          "Honduran legal standing, institutional backing, and compliance practices aligned with international cooperation.",
+          "U.S. legal framework operating in close coordination and compliance with local operational guidelines in Honduras.",
         meta: "Legal compliance",
         icon: GavelRounded,
       },
@@ -275,7 +275,12 @@ const content = {
         icon: HandshakeRounded,
       },
     ],
-    badges: ["Traceability", "Governance", "Responsible use", "Annual reports"],
+    badges: [
+      "U.S. Corporation",
+      "501(c)(3) Status",
+      "Traceability",
+      "Responsible use",
+    ],
   },
 } satisfies Record<
   Language,
@@ -910,47 +915,42 @@ export function TransparencyTrust({
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
-                      mb: 2,
+                      gap: 1,
+                      mb: 1.2,
                     }}
                   >
                     <Box
                       sx={{
-                        width: 42,
-                        height: 42,
+                        width: 36,
+                        height: 36,
                         borderRadius: tokens.radius.pill,
                         display: "grid",
                         placeItems: "center",
-                        color: tokens.color.graphite,
                         backgroundColor: tokens.color.hopeGoldPale,
+                        color: tokens.color.hopeGoldDark,
                       }}
                     >
-                      <SignalIcon sx={{ fontSize: 21 }} />
+                      <SignalIcon sx={{ fontSize: 19 }} />
                     </Box>
-                    <PublicRounded
-                      sx={{ color: tokens.color.hopeGoldDark, fontSize: 18 }}
-                    />
+                    <Typography
+                      sx={{
+                        fontSize: "0.74rem",
+                        fontWeight: 900,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        color: tokens.color.graphiteMuted,
+                      }}
+                    >
+                      {signal.meta}
+                    </Typography>
                   </Box>
                   <Typography
                     sx={{
-                      color: tokens.color.graphiteMuted,
-                      fontSize: "0.72rem",
-                      fontWeight: 900,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      mb: 0.7,
-                    }}
-                  >
-                    {signal.meta}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: tokens.color.graphite,
                       fontFamily: tokens.font.display,
-                      fontWeight: 950,
-                      fontSize: "1.16rem",
-                      lineHeight: 1.2,
-                      mb: 1,
+                      fontWeight: 900,
+                      fontSize: "1.05rem",
+                      color: tokens.color.graphite,
+                      mb: 0.8,
                     }}
                   >
                     {signal.title}
@@ -958,8 +958,8 @@ export function TransparencyTrust({
                   <Typography
                     sx={{
                       color: tokens.color.graphiteSoft,
-                      fontSize: "0.92rem",
-                      lineHeight: 1.62,
+                      fontSize: "0.86rem",
+                      lineHeight: 1.6,
                     }}
                   >
                     {signal.description}

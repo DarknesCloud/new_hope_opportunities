@@ -535,14 +535,14 @@ export function Contacto() {
                         {copy.emailLabel}
                       </Typography>
                       <Link
-                        href="mailto:marneco@nhohonduras.org"
+                        href="mailto:marnec@nhohonduras.org"
                         sx={{
                           color: tokens.color.hopeGoldSoft,
                           textDecoration: "none",
                           fontFamily: tokens.font.body,
                         }}
                       >
-                        marneco@nhohonduras.org
+                        marnec@nhohonduras.org
                       </Link>
                     </Box>
                   </Box>

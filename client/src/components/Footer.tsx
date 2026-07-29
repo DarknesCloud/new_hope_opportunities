@@ -93,7 +93,7 @@ const footerCopy: Record<"es" | "en", Copy> = {
     ],
     contactLines: {
       location: "Rivera Hernández, San Pedro Sula, Honduras",
-      email: "marneco@nhohonduras.org",
+      email: "marnec@nhohonduras.org",
     },
     copyright:
       "New Hope Opportunities Honduras. Todos los derechos reservados.",
@@ -138,7 +138,7 @@ const footerCopy: Record<"es" | "en", Copy> = {
     ],
     contactLines: {
       location: "Rivera Hernández, San Pedro Sula, Honduras",
-      email: "marneco@nhohonduras.org",
+      email: "marnec@nhohonduras.org",
     },
     copyright: "New Hope Opportunities Honduras. All rights reserved.",
     closing: "We operate with traceability, governance, and human care.",
