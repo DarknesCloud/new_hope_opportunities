@@ -14,7 +14,7 @@ import {
   Toolbar,
 } from "@mui/material";
 import { Close as CloseIcon, Menu as MenuIcon } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // <-- Importamos useEffect
 import { Link, useLocation } from "wouter";
 import { Language, useLanguage } from "@/contexts/LanguageContext";
 import { designTokens as tokens } from "@/theme/designTokens";
@@ -44,6 +44,13 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location] = useLocation();
   const { language, setLanguage } = useLanguage();
+
+  // Scroll a la parte superior cada vez que cambia la ruta en wouter
+  useEffect(() => {
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   const handleLanguageChange = (newLanguage: Language) => {
     setLanguage(newLanguage);
@@ -312,7 +319,7 @@ export function Navbar() {
 
               <Button
                 component={Link}
-                href="/#donar"
+                href="/contacto"
                 variant="contained"
                 color="primary"
                 sx={{

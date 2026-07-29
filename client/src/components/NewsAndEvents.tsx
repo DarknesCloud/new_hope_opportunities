@@ -20,7 +20,7 @@ const newsCards: NewsCard[] = [
   {
     title: {
       es: "Refugio",
-      en: "Football Championship",
+      en: "Refuge",
     },
     description: {
       es: "Refugio es un programa que brinda a niñas en situación de vulnerabilidad un espacio seguro donde pueden expresar sus emociones, fortalecer su relación con Dios y recibir apoyo para su crecimiento espiritual, emocional y personal. Actualmente, beneficia a estudiantes de cuarto grado en adelante mediante actividades recreativas, artísticas y de convivencia que promueven la sanidad interior, la confianza y la esperanza.",

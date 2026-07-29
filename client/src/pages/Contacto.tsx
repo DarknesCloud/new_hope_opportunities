@@ -81,7 +81,6 @@ const contactCopy: Record<"es" | "en", ContactCopy> = {
         title: "Alianzas y fundaciones",
         body: "Cooperación estratégica, respaldo institucional y oportunidades de inversión social.",
       },
-
       {
         title: "Empresas y voluntariado",
         body: "Propuestas de responsabilidad social, mentoría técnica y apoyo profesional.",
@@ -547,6 +546,30 @@ export function Contacto() {
                       </Link>
                     </Box>
                   </Box>
+                </Box>
+
+                {/* Previsualización de Google Maps */}
+                <Box
+                  sx={{
+                    mt: 3,
+                    width: "100%",
+                    height: "220px",
+                    borderRadius: tokens.radius.sm,
+                    overflow: "hidden",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.35)",
+                  }}
+                >
+                  <iframe
+                    title="Ubicación de New Hope Opportunities"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.757833596856!2d-87.9694966!3d15.480481!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f664383252c31c7%3A0x5661e625212cdb36!2sNew%20Hope%20Opportunities!5e0!3m2!1ses!2shn!4v1700000000000!5m2!1ses!2shn"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen={false}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </Box>
               </Box>
 
