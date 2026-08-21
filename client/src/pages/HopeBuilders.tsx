@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HopeBuilderHero } from "@/components/HopeBuilderHero";
 import { HopeBuilderIntroduction } from "@/components/HopeBuilderIntroduction";
@@ -22,31 +21,13 @@ export default function HopeBuilders() {
         backgroundColor: tokens.color.ivory,
       }}
     >
-      {/* Navbar */}
-      <Navbar />
-
-      {/* Hero Section */}
       <HopeBuilderHero />
-
-      {/* Introduction Section */}
       <HopeBuilderIntroduction />
-
-      {/* What It Means Section */}
       <WhatItMeansHopeBuilder />
-
-      {/* Impact Examples Section */}
       <ImpactExamples />
-
-      {/* Registration Form Section */}
       <HopeBuilderRegistration />
-
-      {/* Closing Section */}
       <HopeBuilderClosing />
-
-      {/* Main content area - will be filled with components */}
       <Box sx={{ flex: 1 }} />
-
-      {/* Footer */}
       <Footer language={language} />
     </Box>
   );
