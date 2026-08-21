@@ -69,7 +69,7 @@ function goToHopeBuilderForm() {
 }
 
 async function sendSubmission(
-  formType: "contact" | "newsletter" | "hope-builder",
+  formType: "contact" | "hope-builder",
   data: Record<string, string>
 ) {
   const response = await fetch("/api/contact", {
@@ -78,9 +78,17 @@ async function sendSubmission(
     body: JSON.stringify({ formType, data }),
   });
 
-  if (!response.ok) {
-    throw new Error("Submission failed");
-  }
+  if (!response.ok) throw new Error("Submission failed");
+}
+
+async function subscribeNewsletter(email: string) {
+  const response = await fetch("/api/newsletter", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!response.ok) throw new Error("Newsletter subscription failed");
 }
 
 function formValues(form: HTMLFormElement) {
@@ -166,12 +174,8 @@ export function SiteInteractionBridge() {
         const email = emailInput?.value.trim();
         if (!email) return;
 
-        sendSubmission("newsletter", {
-          email,
-          page: window.location.href,
-          submittedAt: new Date().toISOString(),
-        })
-          .then(() => toast.success("Suscripción enviada correctamente."))
+        subscribeNewsletter(email)
+          .then(() => toast.success("Suscripción registrada correctamente."))
           .catch(() =>
             toast.error("No pudimos registrar la suscripción. Inténtalo nuevamente.")
           );
