@@ -28,7 +28,7 @@ export default async function handler(request, response) {
       body: JSON.stringify({
         email,
         unsubscribed: false,
-        segments: [NEWSLETTER_SEGMENT_ID],
+        segments: [{ id: NEWSLETTER_SEGMENT_ID }],
       }),
     });
 
@@ -38,7 +38,6 @@ export default async function handler(request, response) {
       return response.status(200).json({ ok: true });
     }
 
-    // An existing contact may already be subscribed. Do not expose provider internals.
     if (resendResponse.status === 409) {
       const segmentResponse = await fetch(
         `https://api.resend.com/contacts/${encodeURIComponent(email)}/segments/${NEWSLETTER_SEGMENT_ID}`,
