@@ -9,6 +9,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { Navbar } from "./components/Navbar";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ChatbotWidget } from "./components/ChatbotWidget";
+import { SiteInteractionBridge } from "./components/SiteInteractionBridge";
 import Home from "./pages/Home";
 import { Nosotros } from "./pages/Nosotros";
 import { Transparencia } from "./pages/Transparencia";
@@ -55,6 +56,7 @@ function App() {
           <LanguageProvider defaultLanguage="es">
             <TooltipProvider>
               <ScrollToTop />
+              <SiteInteractionBridge />
               <Toaster />
               <Navbar />
               <div className="pt-[76px] md:pt-[88px]">
