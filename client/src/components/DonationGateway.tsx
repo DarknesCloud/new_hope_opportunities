@@ -1,12 +1,5 @@
-import { useMemo, useState } from "react";
-import {
-  Box,
-  Button,
-  Chip,
-  Container,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { useState } from "react";
+import { Box, Button, Chip, Container, Typography } from "@mui/material";
 import {
   FavoriteRounded,
   LockRounded,
@@ -16,52 +9,42 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { designTokens as tokens } from "@/theme/designTokens";
 
-const amounts = [25, 50, 100];
+const options = [
+  { amount: 10, value: "Option 1" },
+  { amount: 25, value: "Option 2" },
+  { amount: 35, value: "Option 3" },
+] as const;
+
+const PAYPAL_HOSTED_BUTTON_ID = "NWPGSA9C7V46S";
 
 export function DonationGateway() {
   const { language } = useLanguage();
-  const [selectedAmount, setSelectedAmount] = useState(50);
-  const [customAmount, setCustomAmount] = useState("");
-
-  const paypalUrl = import.meta.env.VITE_PAYPAL_DONATION_URL?.trim() ?? "";
-  const amount = useMemo(() => {
-    const custom = Number(customAmount);
-    return customAmount && Number.isFinite(custom) && custom > 0
-      ? custom
-      : selectedAmount;
-  }, [customAmount, selectedAmount]);
+  const [selectedOption, setSelectedOption] = useState<(typeof options)[number]>(
+    options[1]
+  );
 
   const copy =
     language === "es"
       ? {
           eyebrow: "Donaciones",
           title: "Tu ayuda se convierte en oportunidades reales.",
-          body: "Apoya la educación, nutrición, formación y acompañamiento de niños y jóvenes de Rivera Hernández. Elige un monto y completa tu donación de forma segura mediante PayPal.",
-          choose: "Elige un monto",
-          custom: "Otro monto",
-          customPlaceholder: "Monto en USD",
-          selected: "Donación seleccionada",
-          paypal: "Donar con PayPal",
-          pending: "PayPal pendiente de configuración",
-          secure: "El pago se procesa directamente en PayPal. New Hope Opportunities no almacena tus datos financieros.",
+          body: "Apoya de forma mensual la educación, nutrición, formación y acompañamiento de niños y jóvenes de Rivera Hernández. Elige uno de los montos oficiales configurados por New Hope Opportunities y completa tu suscripción de forma segura mediante PayPal.",
+          choose: "Elige tu aporte mensual",
+          selected: "Aporte mensual seleccionado",
+          paypal: "Continuar con PayPal",
+          monthly: "/ mes",
+          secure: "La suscripción se procesa directamente en PayPal mediante el botón oficial de New Hope Opportunities. El sitio no almacena datos financieros.",
         }
       : {
           eyebrow: "Donations",
           title: "Your support becomes real opportunity.",
-          body: "Support education, nutrition, formation, and accompaniment for children and young people in Rivera Hernández. Choose an amount and complete your gift securely through PayPal.",
-          choose: "Choose an amount",
-          custom: "Other amount",
-          customPlaceholder: "Amount in USD",
-          selected: "Selected donation",
-          paypal: "Donate with PayPal",
-          pending: "PayPal configuration pending",
-          secure: "Payment is processed directly by PayPal. New Hope Opportunities does not store your financial information.",
+          body: "Provide monthly support for education, nutrition, formation, and accompaniment for children and young people in Rivera Hernández. Choose one of New Hope Opportunities' official giving amounts and complete your subscription securely through PayPal.",
+          choose: "Choose your monthly support",
+          selected: "Selected monthly support",
+          paypal: "Continue with PayPal",
+          monthly: "/ month",
+          secure: "The subscription is processed directly by PayPal using New Hope Opportunities' official hosted button. This site does not store financial information.",
         };
-
-  const openPayPal = () => {
-    if (!paypalUrl) return;
-    window.open(paypalUrl, "_blank", "noopener,noreferrer");
-  };
 
   return (
     <Box
@@ -110,12 +93,26 @@ export function DonationGateway() {
 
           <Box
             className="hope-card-premium"
+            component="form"
+            action="https://www.paypal.com/cgi-bin/webscr"
+            method="post"
+            target="_blank"
             sx={{
               p: { xs: 2.4, sm: 3, md: 4 },
               background: "rgba(255,255,255,0.94)",
               border: `1px solid ${tokens.color.line}`,
             }}
           >
+            <input type="hidden" name="cmd" value="_s-xclick" />
+            <input
+              type="hidden"
+              name="hosted_button_id"
+              value={PAYPAL_HOSTED_BUTTON_ID}
+            />
+            <input type="hidden" name="on0" value="Donate Monthly" />
+            <input type="hidden" name="os0" value={selectedOption.value} />
+            <input type="hidden" name="currency_code" value="USD" />
+
             <Typography
               sx={{
                 fontFamily: tokens.font.display,
@@ -131,27 +128,24 @@ export function DonationGateway() {
             <Box
               sx={{
                 display: "grid",
-                gridTemplateColumns: { xs: "repeat(3, 1fr)" },
+                gridTemplateColumns: "repeat(3, 1fr)",
                 gap: 1.2,
-                mb: 2,
+                mb: 2.5,
               }}
             >
-              {amounts.map(option => {
-                const active = !customAmount && selectedAmount === option;
+              {options.map(option => {
+                const active = selectedOption.value === option.value;
                 return (
                   <Button
-                    key={option}
+                    key={option.value}
                     type="button"
-                    onClick={() => {
-                      setSelectedAmount(option);
-                      setCustomAmount("");
-                    }}
+                    onClick={() => setSelectedOption(option)}
                     variant={active ? "contained" : "outlined"}
                     sx={{
                       py: 1.5,
                       borderRadius: tokens.radius.md,
                       fontFamily: tokens.font.display,
-                      fontSize: { xs: "1rem", sm: "1.12rem" },
+                      fontSize: { xs: "0.95rem", sm: "1.12rem" },
                       fontWeight: 900,
                       color: active
                         ? tokens.color.graphite
@@ -170,28 +164,11 @@ export function DonationGateway() {
                       },
                     }}
                   >
-                    ${option}
+                    ${option.amount}
                   </Button>
                 );
               })}
             </Box>
-
-            <TextField
-              fullWidth
-              type="number"
-              label={copy.custom}
-              placeholder={copy.customPlaceholder}
-              value={customAmount}
-              onChange={event => setCustomAmount(event.target.value)}
-              inputProps={{ min: 1, step: "0.01" }}
-              sx={{
-                mb: 2.5,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: tokens.radius.md,
-                  backgroundColor: tokens.color.warmWhite,
-                },
-              }}
-            />
 
             <Box
               sx={{
@@ -215,7 +192,7 @@ export function DonationGateway() {
                 </Typography>
               </Box>
               <Chip
-                label={`$${amount.toFixed(2)} USD`}
+                label={`$${selectedOption.amount}.00 USD ${copy.monthly}`}
                 sx={{
                   backgroundColor: tokens.color.graphite,
                   color: tokens.color.warmWhite,
@@ -226,11 +203,9 @@ export function DonationGateway() {
 
             <Button
               fullWidth
-              type="button"
+              type="submit"
               variant="contained"
               size="large"
-              onClick={openPayPal}
-              disabled={!paypalUrl}
               endIcon={<OpenInNewRounded />}
               sx={{
                 minHeight: 56,
@@ -246,13 +221,9 @@ export function DonationGateway() {
                   transform: "translateY(-2px)",
                   boxShadow: tokens.shadow.elevated,
                 },
-                "&.Mui-disabled": {
-                  backgroundColor: tokens.color.warmSand,
-                  color: tokens.color.graphiteMuted,
-                },
               }}
             >
-              {paypalUrl ? copy.paypal : copy.pending}
+              {copy.paypal}
             </Button>
 
             <Box
