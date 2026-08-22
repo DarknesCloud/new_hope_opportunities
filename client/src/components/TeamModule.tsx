@@ -49,7 +49,7 @@ const copy = {
       },
       {
         name: "TANNER & HEATHER",
-        role: "Director of Projects, USA",
+        role: "Chief Financial Officer, USA",
         image: "/assets/tannerandheather.png",
       },
       {
@@ -58,17 +58,17 @@ const copy = {
         image: "/assets/gloria.png",
       },
       {
-        name: "KELLY ANDRADE",
-        role: "Director of Projects, Honduras",
+        name: "LIC. HOSMAN FERNANDEZ",
+        role: "Director of Spiritual Life",
+        image: "/assets/hosman.png",
+      },
+      {
+        name: "ABOG. KELLY ANDRADE",
+        role: "Administrative Director, Honduras",
         image: "/assets/kelly.png",
       },
       {
-        name: "GERARDO & MEYLI LOPEZ",
-        role: "Directors of Youth Ministries, Honduras",
-        image: "/assets/gerardoymeyli.jpg",
-      },
-      {
-        name: "MARIELA PINEDA",
+        name: "LIC. MARIELA PINEDA",
         role: "Academic Director, Honduras",
         image: "/assets/MarielaPineda.jpg",
       },
