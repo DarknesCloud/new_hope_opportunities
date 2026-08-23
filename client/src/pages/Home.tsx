@@ -6,23 +6,24 @@ import { EducationalModel } from "@/components/EducationalModel";
 import { CallToAction } from "@/components/CallToAction";
 import { NewsAndEvents } from "@/components/NewsAndEvents";
 import { ImpactStats } from "@/components/ImpactStats";
-import { DonationGateway } from "@/components/DonationGateway";
 import { Footer } from "@/components/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { designTokens as tokens } from "@/theme/designTokens";
+
+function navigate(path: string) {
+  window.history.pushState({}, "", path);
+  window.dispatchEvent(new PopStateEvent("popstate"));
+}
 
 export default function Home() {
   const { language } = useLanguage();
 
   const handleSponsorClick = () => {
-    document
-      .getElementById("donar")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    navigate("/donar");
   };
 
   const handleVideoClick = () => {
-    window.history.pushState({}, "", "/acerca-de");
-    window.dispatchEvent(new PopStateEvent("popstate"));
+    navigate("/acerca-de");
   };
 
   return (
@@ -45,7 +46,6 @@ export default function Home() {
       <CallToAction />
       <NewsAndEvents />
       <ImpactStats />
-      <DonationGateway />
       <Footer language={language} />
     </Box>
   );
