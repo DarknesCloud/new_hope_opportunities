@@ -15,6 +15,7 @@ import { Nosotros } from "./pages/Nosotros";
 import { Transparencia } from "./pages/Transparencia";
 import { Contacto } from "./pages/Contacto";
 import { Programas } from "./pages/Programas";
+import { Donar } from "./pages/Donar";
 import About from "./pages/About";
 import HopeBuilders from "./pages/HopeBuilders";
 
@@ -39,7 +40,7 @@ function Router() {
       <Route path={"/programas/refugio"} component={ProgramRefugio} />
       <Route path={"/programas/campamento-juvenil"} component={ProgramCampamento} />
       <Route path={"/programas/viajes-misioneros"} component={ProgramViajesMisioneros} />
-
+      <Route path={"/donar"} component={Donar} />
       <Route path={"/transparencia"} component={Transparencia} />
       <Route path={"/contacto"} component={Contacto} />
       <Route path={"/404"} component={NotFound} />
