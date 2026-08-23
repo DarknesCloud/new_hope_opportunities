@@ -144,7 +144,14 @@ export function SiteInteractionBridge() {
         return;
       }
 
-      if (joinButtons.has(text) && window.location.pathname === "/hope-builders") {
+      const isSubmitButton =
+        button instanceof HTMLButtonElement && button.type === "submit";
+
+      if (
+        joinButtons.has(text) &&
+        window.location.pathname === "/hope-builders" &&
+        !isSubmitButton
+      ) {
         event.preventDefault();
         goToHopeBuilderForm();
         return;
