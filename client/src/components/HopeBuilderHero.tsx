@@ -25,6 +25,13 @@ const content = {
   },
 };
 
+function scrollToRegistration() {
+  document
+    .querySelector<HTMLInputElement>('input[name="donationAmount"]')
+    ?.closest("form")
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
 export function HopeBuilderHero() {
   const { language } = useLanguage();
   const copy = content[language];
@@ -43,7 +50,6 @@ export function HopeBuilderHero() {
         mt: { xs: "76px", md: "88px" },
       }}
     >
-      {/* Background Image with Overlay */}
       <Box
         sx={{
           position: "absolute",
@@ -59,7 +65,6 @@ export function HopeBuilderHero() {
         }}
       />
 
-      {/* Dark Overlay Gradient */}
       <Box
         sx={{
           position: "absolute",
@@ -72,7 +77,6 @@ export function HopeBuilderHero() {
         }}
       />
 
-      {/* Gold Accent Line - Top */}
       <Box
         sx={{
           position: "absolute",
@@ -85,7 +89,6 @@ export function HopeBuilderHero() {
         }}
       />
 
-      {/* Content Container */}
       <Container
         maxWidth="lg"
         sx={{
@@ -105,7 +108,6 @@ export function HopeBuilderHero() {
             py: { xs: 4, md: 6 },
           }}
         >
-          {/* Eyebrow */}
           <Typography
             sx={{
               fontFamily: tokens.font.body,
@@ -121,7 +123,6 @@ export function HopeBuilderHero() {
             {copy.eyebrow}
           </Typography>
 
-          {/* Main Title */}
           <Typography
             component="h1"
             sx={{
@@ -139,7 +140,6 @@ export function HopeBuilderHero() {
             {copy.title}
           </Typography>
 
-          {/* Subtitle */}
           <Typography
             sx={{
               fontFamily: tokens.font.display,
@@ -156,7 +156,6 @@ export function HopeBuilderHero() {
             {copy.subtitle}
           </Typography>
 
-          {/* Description */}
           <Typography
             sx={{
               fontFamily: tokens.font.body,
@@ -174,7 +173,6 @@ export function HopeBuilderHero() {
             {copy.description}
           </Typography>
 
-          {/* CTA Button */}
           <Box
             sx={{
               display: "flex",
@@ -184,6 +182,7 @@ export function HopeBuilderHero() {
             }}
           >
             <Button
+              onClick={scrollToRegistration}
               variant="contained"
               color="primary"
               size="large"
@@ -209,7 +208,6 @@ export function HopeBuilderHero() {
         </Box>
       </Container>
 
-      {/* Animated Gradient Accent - Bottom Right */}
       <Box
         sx={{
           position: "absolute",
