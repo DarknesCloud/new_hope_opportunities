@@ -32,20 +32,7 @@ function changeLocation(path: string) {
 }
 
 function goToDonation() {
-  const section = document.getElementById("donar");
-  if (window.location.pathname === "/" && section) {
-    window.history.replaceState({}, "", "/#donar");
-    section.scrollIntoView({ behavior: "smooth", block: "start" });
-    return;
-  }
-
-  changeLocation("/#donar");
-  window.setTimeout(() => {
-    document.getElementById("donar")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, 120);
+  changeLocation("/donar");
 }
 
 function goToHopeBuilderForm() {
