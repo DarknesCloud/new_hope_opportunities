@@ -2,8 +2,6 @@ import { Box, Container, Typography, Button, Grid } from "@mui/material";
 import { designTokens as tokens } from "@/theme/designTokens";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowRight, Heart } from "lucide-react";
-import communityImage1 from "@/assets/photos/pillar-education.webp";
-import communityImage2 from "@/assets/photos/impact-sports.webp";
 
 const content = {
   es: {
@@ -28,6 +26,18 @@ const content = {
   },
 };
 
+function scrollToRegistration() {
+  document
+    .querySelector<HTMLInputElement>('input[name="donationAmount"]')
+    ?.closest("form")
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function goToDonation() {
+  window.history.pushState({}, "", "/donar");
+  window.dispatchEvent(new PopStateEvent("popstate"));
+}
+
 export function HopeBuilderClosing() {
   const { language } = useLanguage();
   const copy = content[language];
@@ -41,9 +51,7 @@ export function HopeBuilderClosing() {
       }}
     >
       <Container maxWidth="lg">
-        {/* Main Title */}
         <Box sx={{ textAlign: "center", mb: { xs: 6, md: 8 } }}>
-          {/* Gold Accent Line */}
           <Box
             sx={{
               width: "4rem",
@@ -55,9 +63,6 @@ export function HopeBuilderClosing() {
           />
         </Box>
 
-        {/* Content Grid with Images */}
-
-        {/* Call to Action Section */}
         <Box
           sx={{
             p: { xs: 4, md: 6 },
@@ -68,7 +73,6 @@ export function HopeBuilderClosing() {
             mb: { xs: 4, md: 6 },
           }}
         >
-          {/* CTA Question */}
           <Typography
             sx={{
               fontFamily: tokens.font.display,
@@ -83,10 +87,10 @@ export function HopeBuilderClosing() {
             {copy.callToAction}
           </Typography>
 
-          {/* CTA Buttons */}
           <Grid container spacing={2} sx={{ justifyContent: "center" }}>
             <Grid item xs={12} sm="auto">
               <Button
+                onClick={scrollToRegistration}
                 sx={{
                   backgroundColor: tokens.color.hopeGold,
                   color: tokens.color.graphite,
@@ -117,6 +121,7 @@ export function HopeBuilderClosing() {
             </Grid>
             <Grid item xs={12} sm="auto">
               <Button
+                onClick={goToDonation}
                 sx={{
                   backgroundColor: "transparent",
                   color: tokens.color.hopeGold,
@@ -149,7 +154,6 @@ export function HopeBuilderClosing() {
           </Grid>
         </Box>
 
-        {/* Closing Message */}
         <Box
           sx={{
             p: { xs: 3, md: 4 },
