@@ -15,6 +15,7 @@ const donationButtons = new Set([
   "donate",
   "donar ahora",
   "donate now",
+  "sponsor a story",
   "¡actúa ya!",
   "actúa ya",
   "take action",
