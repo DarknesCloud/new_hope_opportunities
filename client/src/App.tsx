@@ -10,6 +10,7 @@ import { Navbar } from "./components/Navbar";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ChatbotWidget } from "./components/ChatbotWidget";
 import { SiteInteractionBridge } from "./components/SiteInteractionBridge";
+import { DeveloperCredit } from "./components/DeveloperCredit";
 import Home from "./pages/Home";
 import { Nosotros } from "./pages/Nosotros";
 import { Transparencia } from "./pages/Transparencia";
@@ -63,6 +64,7 @@ function App() {
               <div className="pt-[76px] md:pt-[88px]">
                 <Router />
               </div>
+              <DeveloperCredit />
               <ChatbotWidget />
             </TooltipProvider>
           </LanguageProvider>
