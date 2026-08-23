@@ -14,7 +14,7 @@ import {
   Toolbar,
 } from "@mui/material";
 import { Close as CloseIcon, Menu as MenuIcon } from "@mui/icons-material";
-import { useState, useEffect } from "react"; // <-- Importamos useEffect
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Language, useLanguage } from "@/contexts/LanguageContext";
 import { designTokens as tokens } from "@/theme/designTokens";
@@ -45,7 +45,6 @@ export function Navbar() {
   const [location] = useLocation();
   const { language, setLanguage } = useLanguage();
 
-  // Scroll a la parte superior cada vez que cambia la ruta en wouter
   useEffect(() => {
     if (!window.location.hash) {
       window.scrollTo(0, 0);
@@ -167,9 +166,10 @@ export function Navbar() {
         <Button
           fullWidth
           component={Link}
-          href="/#donar"
+          href="/donar"
           variant="contained"
           color="primary"
+          onClick={() => setMobileOpen(false)}
           sx={{ minHeight: 48 }}
         >
           {language === "es" ? "Donar ahora" : "Donate now"}
@@ -200,7 +200,6 @@ export function Navbar() {
               gap: 2,
             }}
           >
-            {/* Logo */}
             <Box
               component={Link}
               href="/"
@@ -227,7 +226,6 @@ export function Navbar() {
               />
             </Box>
 
-            {/* Desktop Navigation */}
             <Box
               sx={{
                 display: { xs: "none", md: "flex" },
@@ -256,24 +254,18 @@ export function Navbar() {
                       borderRadius: tokens.radius.pill,
                       whiteSpace: "nowrap",
                       textTransform: "none",
-
                       color: isActive
                         ? tokens.color.graphite
                         : tokens.color.graphiteSoft,
-
                       backgroundColor: isActive
                         ? "rgba(242,185,0,.12)"
                         : "transparent",
-
                       fontSize: {
                         md: "0.84rem",
                         lg: "0.9rem",
                       },
-
                       fontWeight: isActive ? 700 : 560,
-
                       transition: navTransition,
-
                       "&:hover": {
                         backgroundColor: "rgba(242,185,0,.10)",
                         color: tokens.color.graphite,
@@ -286,7 +278,6 @@ export function Navbar() {
               })}
             </Box>
 
-            {/* Right Side */}
             <Box
               sx={{
                 display: { xs: "none", md: "flex" },
@@ -306,7 +297,6 @@ export function Navbar() {
                   height: 40,
                   borderRadius: tokens.radius.pill,
                   backgroundColor: "rgba(255,255,255,.7)",
-
                   "& .MuiSelect-select": {
                     py: 1,
                     fontSize: "0.82rem",
@@ -319,7 +309,7 @@ export function Navbar() {
 
               <Button
                 component={Link}
-                href="/contacto"
+                href="/donar"
                 variant="contained"
                 color="primary"
                 sx={{
@@ -336,7 +326,6 @@ export function Navbar() {
               </Button>
             </Box>
 
-            {/* Mobile */}
             <IconButton
               onClick={() => setMobileOpen(true)}
               aria-label="Open navigation menu"
@@ -345,7 +334,6 @@ export function Navbar() {
                 color: tokens.color.graphite,
                 border: `1px solid ${tokens.color.line}`,
                 backgroundColor: "rgba(255,255,255,.7)",
-
                 "&:hover": {
                   backgroundColor: "rgba(242,185,0,.10)",
                 },
