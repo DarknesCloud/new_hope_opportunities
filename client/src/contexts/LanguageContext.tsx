@@ -21,9 +21,20 @@ function getInitialLanguage(defaultLanguage: Language): Language {
   if (typeof window === "undefined") return defaultLanguage;
 
   const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  return storedLanguage === "en" || storedLanguage === "es"
-    ? storedLanguage
-    : defaultLanguage;
+  if (storedLanguage === "en" || storedLanguage === "es") return storedLanguage;
+
+  // First visit: respect the visitor's browser language. This gives English-speaking
+  // visitors (including most US visitors) English immediately without overriding
+  // a language they explicitly selected on a previous visit.
+  const browserLanguages = navigator.languages?.length
+    ? navigator.languages
+    : [navigator.language];
+  const primaryLanguage = browserLanguages[0]?.toLowerCase() || "";
+
+  if (primaryLanguage.startsWith("en")) return "en";
+  if (primaryLanguage.startsWith("es")) return "es";
+
+  return defaultLanguage;
 }
 
 export function LanguageProvider({ children, defaultLanguage = "es" }: LanguageProviderProps) {
