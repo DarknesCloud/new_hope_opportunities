@@ -11,7 +11,7 @@ const options = [
 ] as const;
 
 const MONTHLY_PAYPAL_BUTTON_ID = "NWPGSA9C7V46S";
-const ONE_TIME_PAYPAL_BUTTON_ID = "CUAK4Z7T8G9Q6";
+const ONE_TIME_PAYPAL_BUTTON_ID = "TVH45LLUZJ5J4";
 
 type DonationMode = "once" | "monthly";
 
@@ -36,7 +36,7 @@ export function DonationGateway() {
     secureMonthly: "Your monthly subscription is processed directly by PayPal using New Hope Opportunities' official hosted button. This site does not store financial information.",
   };
 
-  const paypalButtonId = mode === "once" ? ONE_TIME_PAYPAL_BUTTON_ID : MONTHLY_PAYPAL_BUTTON_ID;
+  const isOneTime = mode === "once";
 
   return (
     <Box id="donar" component="section" className="section-shell" sx={{ position: "relative", overflow: "hidden", background: `linear-gradient(180deg, ${tokens.color.warmWhite} 0%, ${tokens.color.ivory} 52%, ${tokens.color.warmSand} 100%)`, borderTop: `1px solid ${tokens.color.line}`, borderBottom: `1px solid ${tokens.color.line}` }}>
@@ -50,17 +50,17 @@ export function DonationGateway() {
 
           <Box className="hope-card-premium" sx={{ p: { xs: 2.4, sm: 3, md: 4 }, background: "rgba(255,255,255,0.94)", border: `1px solid ${tokens.color.line}` }}>
             <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1, mb: 3, p: .6, backgroundColor: tokens.color.ivory, borderRadius: tokens.radius.pill, border: `1px solid ${tokens.color.line}` }}>
-              <Button type="button" onClick={() => setMode("once")} variant={mode === "once" ? "contained" : "text"} sx={{ borderRadius: tokens.radius.pill, fontWeight: 900, textTransform: "none" }}>{copy.once}</Button>
-              <Button type="button" onClick={() => setMode("monthly")} variant={mode === "monthly" ? "contained" : "text"} sx={{ borderRadius: tokens.radius.pill, fontWeight: 900, textTransform: "none" }}>{copy.monthlyTab}</Button>
+              <Button type="button" onClick={() => setMode("once")} variant={isOneTime ? "contained" : "text"} sx={{ borderRadius: tokens.radius.pill, fontWeight: 900, textTransform: "none" }}>{copy.once}</Button>
+              <Button type="button" onClick={() => setMode("monthly")} variant={!isOneTime ? "contained" : "text"} sx={{ borderRadius: tokens.radius.pill, fontWeight: 900, textTransform: "none" }}>{copy.monthlyTab}</Button>
             </Box>
 
-            <Box component="form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+            <Box component="form" action={isOneTime ? "https://www.paypal.com/donate" : "https://www.paypal.com/cgi-bin/webscr"} method="post" target="_blank">
               <input type="hidden" name="cmd" value="_s-xclick" />
-              <input type="hidden" name="hosted_button_id" value={paypalButtonId} />
+              <input type="hidden" name="hosted_button_id" value={isOneTime ? ONE_TIME_PAYPAL_BUTTON_ID : MONTHLY_PAYPAL_BUTTON_ID} />
               <input type="hidden" name="currency_code" value="USD" />
-              {mode === "monthly" && <><input type="hidden" name="on0" value="Donate Monthly" /><input type="hidden" name="os0" value={selectedOption.value} /></>}
+              {!isOneTime && <><input type="hidden" name="on0" value="Donate Monthly" /><input type="hidden" name="os0" value={selectedOption.value} /></>}
 
-              {mode === "once" ? (
+              {isOneTime ? (
                 <>
                   <Typography sx={{ fontFamily: tokens.font.display, fontWeight: 900, color: tokens.color.graphite, fontSize: "1.15rem", mb: 1 }}>{copy.onceTitle}</Typography>
                   <Typography sx={{ color: tokens.color.graphiteSoft, lineHeight: 1.7, mb: 3 }}>{copy.onceBody}</Typography>
@@ -78,8 +78,8 @@ export function DonationGateway() {
                 </>
               )}
 
-              <Button fullWidth type="submit" variant="contained" size="large" endIcon={<OpenInNewRounded />} sx={{ minHeight: 56, borderRadius: tokens.radius.pill, backgroundColor: tokens.color.hopeGold, color: tokens.color.graphite, fontFamily: tokens.font.body, fontWeight: 900, textTransform: "none", boxShadow: tokens.shadow.gold, "&:hover": { backgroundColor: tokens.color.hopeGoldSoft, transform: "translateY(-2px)", boxShadow: tokens.shadow.elevated } }}>{mode === "once" ? copy.oncePaypal : copy.paypal}</Button>
-              <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1, mt: 1.7 }}><LockRounded sx={{ color: tokens.color.hopeGoldDark, fontSize: 17, mt: "2px" }} /><Typography sx={{ color: tokens.color.graphiteMuted, fontSize: "0.82rem", lineHeight: 1.55 }}>{mode === "once" ? copy.secureOnce : copy.secureMonthly}</Typography></Box>
+              <Button fullWidth type="submit" variant="contained" size="large" endIcon={<OpenInNewRounded />} sx={{ minHeight: 56, borderRadius: tokens.radius.pill, backgroundColor: tokens.color.hopeGold, color: tokens.color.graphite, fontFamily: tokens.font.body, fontWeight: 900, textTransform: "none", boxShadow: tokens.shadow.gold, "&:hover": { backgroundColor: tokens.color.hopeGoldSoft, transform: "translateY(-2px)", boxShadow: tokens.shadow.elevated } }}>{isOneTime ? copy.oncePaypal : copy.paypal}</Button>
+              <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1, mt: 1.7 }}><LockRounded sx={{ color: tokens.color.hopeGoldDark, fontSize: 17, mt: "2px" }} /><Typography sx={{ color: tokens.color.graphiteMuted, fontSize: "0.82rem", lineHeight: 1.55 }}>{isOneTime ? copy.secureOnce : copy.secureMonthly}</Typography></Box>
             </Box>
           </Box>
         </Box>
