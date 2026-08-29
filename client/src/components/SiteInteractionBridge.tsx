@@ -22,6 +22,7 @@ const donationButtons = new Set([
 ]);
 
 const joinButtons = new Set(["únete ahora", "unete ahora", "join now"]);
+const HONEYPOT_NAME = "website";
 
 function normalize(value: string) {
   return value.trim().replace(/\s+/g, " ").toLowerCase();
@@ -56,14 +57,55 @@ function goToHopeBuilderForm() {
   }, 160);
 }
 
+function isProtectedForm(form: HTMLFormElement) {
+  const hasContactFields =
+    !!form.querySelector('[name="email"]') &&
+    !!form.querySelector('[name="message"]') &&
+    !!form.querySelector('[name="subject"]');
+  const hasHopeBuilderFields =
+    !!form.querySelector('[name="email"]') &&
+    !!form.querySelector('[name="firstName"]') &&
+    !!form.querySelector('[name="lastName"]') &&
+    !!form.querySelector('[name="donationAmount"]');
+
+  return hasContactFields || hasHopeBuilderFields;
+}
+
+function installHoneypot(form: HTMLFormElement) {
+  if (!isProtectedForm(form) || form.querySelector(`[name="${HONEYPOT_NAME}"]`)) return;
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.name = HONEYPOT_NAME;
+  input.tabIndex = -1;
+  input.autocomplete = "off";
+  input.setAttribute("aria-hidden", "true");
+  input.style.position = "absolute";
+  input.style.left = "-10000px";
+  input.style.top = "auto";
+  input.style.width = "1px";
+  input.style.height = "1px";
+  input.style.opacity = "0";
+  input.style.pointerEvents = "none";
+
+  form.prepend(input);
+  form.dataset.antibotStartedAt = String(Date.now());
+}
+
 async function sendSubmission(
   formType: "contact" | "hope-builder",
-  data: Record<string, string>
+  data: Record<string, string>,
+  startedAt: number,
+  honeypot: string
 ) {
   const response = await fetch("/api/contact", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ formType, data }),
+    body: JSON.stringify({
+      formType,
+      data,
+      meta: { startedAt, honeypot },
+    }),
   });
 
   if (!response.ok) throw new Error("Submission failed");
@@ -88,6 +130,14 @@ function formValues(form: HTMLFormElement) {
 
 export function SiteInteractionBridge() {
   useEffect(() => {
+    const scanForms = () => {
+      document.querySelectorAll<HTMLFormElement>("form").forEach(installHoneypot);
+    };
+
+    scanForms();
+    const observer = new MutationObserver(scanForms);
+    observer.observe(document.body, { childList: true, subtree: true });
+
     const handleSubmit = (event: SubmitEvent) => {
       const form = event.target;
       if (!(form instanceof HTMLFormElement)) return;
@@ -103,12 +153,26 @@ export function SiteInteractionBridge() {
 
       if (!hasContactFields && !hasHopeBuilderFields) return;
 
+      const honeypot = values[HONEYPOT_NAME] ?? "";
+      delete values[HONEYPOT_NAME];
+
+      // Automated form-fillers commonly populate every text input. Silently discard
+      // a submission when the invisible field is touched so bots cannot probe it.
+      if (honeypot.trim()) return;
+
       const formType = hasHopeBuilderFields ? "hope-builder" : "contact";
-      sendSubmission(formType, {
-        ...values,
-        page: window.location.href,
-        submittedAt: new Date().toISOString(),
-      })
+      const startedAt = Number(form.dataset.antibotStartedAt || 0);
+
+      sendSubmission(
+        formType,
+        {
+          ...values,
+          page: window.location.href,
+          submittedAt: new Date().toISOString(),
+        },
+        startedAt,
+        honeypot
+      )
         .then(() => {
           toast.success(
             formType === "contact"
@@ -181,6 +245,7 @@ export function SiteInteractionBridge() {
     document.addEventListener("click", handleClick, true);
 
     return () => {
+      observer.disconnect();
       document.removeEventListener("submit", handleSubmit, true);
       document.removeEventListener("click", handleClick, true);
     };
