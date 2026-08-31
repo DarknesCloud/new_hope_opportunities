@@ -23,6 +23,8 @@ export function Donar() {
   const { language } = useLanguage();
   const content = copy[language];
   const [form, setForm] = useState({ name: "", email: "", amount: "", date: "", reference: "", message: "" });
+  const [website, setWebsite] = useState("");
+  const [startedAt] = useState(() => Date.now());
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error" | "required">("idle");
   const update = (field: keyof typeof form) => (event: React.ChangeEvent<HTMLInputElement>) => setForm(current => ({ ...current, [field]: event.target.value }));
 
@@ -31,9 +33,27 @@ export function Donar() {
     if (!form.name.trim() || !form.email.trim() || (!form.reference.trim() && !(form.amount.trim() && form.date.trim()))) { setStatus("required"); return; }
     setStatus("sending");
     try {
-      const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ formType: "donation-receipt", data: { name: form.name, email: form.email, amountUSD: form.amount, donationDate: form.date, paypalReference: form.reference, message: form.message, page: window.location.href, submittedAt: new Date().toISOString() } }) });
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formType: "donation-receipt",
+          meta: { honeypot: website, startedAt },
+          data: {
+            name: form.name,
+            email: form.email,
+            amountUSD: form.amount,
+            donationDate: form.date,
+            paypalReference: form.reference,
+            message: form.message,
+            page: window.location.href,
+            submittedAt: new Date().toISOString(),
+          },
+        }),
+      });
       if (!response.ok) throw new Error("request failed");
       setForm({ name: "", email: "", amount: "", date: "", reference: "", message: "" });
+      setWebsite("");
       setStatus("success");
     } catch { setStatus("error"); }
   };
@@ -55,8 +75,11 @@ export function Donar() {
               <Box sx={{ display: "flex", gap: 1, alignItems: "center", color: tokens.color.hopeGoldDark, mb: 1.5 }}><ReceiptLongRounded /><Typography sx={{ fontSize: ".78rem", fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase" }}>{content.receiptEyebrow}</Typography></Box>
               <Typography variant="h3" sx={{ mb: 1.5 }}>{content.receiptTitle}</Typography><Typography sx={{ color: tokens.color.graphiteSoft, lineHeight: 1.75, mb: 3 }}>{content.receiptBody}</Typography>
               <Box component="form" onSubmit={submitReceipt} sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2 }}>
+                <Box sx={{ position: "absolute", left: "-10000px", width: 1, height: 1, overflow: "hidden" }} aria-hidden="true">
+                  <TextField name="website" tabIndex={-1} autoComplete="off" value={website} onChange={event => setWebsite(event.target.value)} />
+                </Box>
                 <TextField required label={content.name} value={form.name} onChange={update("name")} /><TextField required type="email" label={content.email} value={form.email} onChange={update("email")} />
-                <TextField type="number" inputProps={{ min: 0, step: "0.01" }} label={content.amount} value={form.amount} onChange={update("amount")} /><TextField type="date" InputLabelProps={{ shrink: true }} label={content.date} value={form.date} onChange={update("date")} />
+                <TextField type="number" inputProps={{ min: 0.01, step: "0.01", max: 100000 }} label={content.amount} value={form.amount} onChange={update("amount")} /><TextField type="date" InputLabelProps={{ shrink: true }} label={content.date} value={form.date} onChange={update("date")} />
                 <TextField label={content.reference} value={form.reference} onChange={update("reference")} sx={{ gridColumn: { sm: "1 / -1" } }} /><TextField multiline minRows={3} label={content.notes} value={form.message} onChange={update("message")} sx={{ gridColumn: { sm: "1 / -1" } }} />
                 <Box sx={{ gridColumn: { sm: "1 / -1" } }}><Button type="submit" variant="contained" disabled={status === "sending"}>{status === "sending" ? content.sending : content.submit}</Button>{status !== "idle" && status !== "sending" && <Typography sx={{ mt: 1.5, fontSize: ".9rem", color: status === "success" ? "success.main" : "error.main" }}>{status === "success" ? content.success : status === "required" ? content.required : content.error}</Typography>}</Box>
               </Box>
