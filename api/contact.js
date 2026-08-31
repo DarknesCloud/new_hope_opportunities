@@ -57,7 +57,6 @@ function isRateLimited(ip) {
   recent.push(now);
   rateBuckets.set(ip, recent);
 
-  // Keep the best-effort in-memory limiter bounded on warm serverless instances.
   if (rateBuckets.size > 1000) {
     for (const [key, timestamps] of rateBuckets) {
       if (!timestamps.some(timestamp => now - timestamp < RATE_WINDOW_MS)) rateBuckets.delete(key);
@@ -84,6 +83,22 @@ function validEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
 }
 
+function validDonationDate(value) {
+  const raw = String(value || "").trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return false;
+  const timestamp = Date.parse(`${raw}T00:00:00Z`);
+  if (!Number.isFinite(timestamp)) return false;
+  const now = Date.now();
+  const earliest = Date.UTC(2010, 0, 1);
+  const latest = now + 24 * 60 * 60 * 1000;
+  return timestamp >= earliest && timestamp <= latest;
+}
+
+function validDonationAmount(value) {
+  const amount = Number(value);
+  return Number.isFinite(amount) && amount > 0 && amount <= 100000;
+}
+
 function hasValidRequiredFields(formType, payload) {
   if (!validEmail(payload.email)) return false;
 
@@ -104,7 +119,13 @@ function hasValidRequiredFields(formType, payload) {
   }
 
   if (formType === "donation-receipt") {
-    return String(payload.name || "").trim().length >= 2;
+    const name = String(payload.name || "").trim();
+    const reference = String(payload.paypalReference || "").trim();
+    const hasReference = reference.length >= 8 && reference.length <= 80;
+    const hasTransactionDetails =
+      validDonationAmount(payload.amountUSD) && validDonationDate(payload.donationDate);
+
+    return name.length >= 2 && name.length <= 120 && (hasReference || hasTransactionDetails);
   }
 
   return false;
@@ -134,9 +155,9 @@ export default async function handler(request, response) {
       ? body.data
       : {};
 
-  // Contact and Hope Builder forms must originate from the live UI, remain open
-  // long enough for a human interaction, and leave the invisible honeypot empty.
-  if ((formType === "contact" || formType === "hope-builder") && !passesAntiBotCheck(body)) {
+  // Every public form must originate from the live UI, remain open long enough
+  // for a human interaction, and leave the invisible honeypot empty.
+  if (!passesAntiBotCheck(body)) {
     return response.status(200).json({ ok: true });
   }
 
