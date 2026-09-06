@@ -1,9 +1,24 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "npm install --force",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
   "routes": [
+    {
+      "src": "/",
+      "has": [
+        { "type": "query", "key": "callback", "value": "gravityformspaypal" }
+      ],
+      "dest": "/api/paypal-ipn"
+    },
+    {
+      "src": "/",
+      "has": [
+        { "type": "query", "key": "page", "value": "gf_paypal_ipn" }
+      ],
+      "dest": "/api/paypal-ipn"
+    },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
