@@ -1,0 +1,8 @@
+@page{size:11in 8.5in;margin:0}
+html,body{width:11in;height:8.5in;background:#fff!important}
+.preview-toolbar,.preview-note{display:none!important}
+.preview-stage{display:block;padding:0!important}
+.brochure-sheet{display:none!important;width:11in!important;height:8.5in!important;aspect-ratio:auto!important;box-shadow:none!important;page-break-after:always;break-after:page}
+.brochure-sheet.is-visible{display:grid!important}
+.fold-guide{display:none!important}
+@media print{body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
