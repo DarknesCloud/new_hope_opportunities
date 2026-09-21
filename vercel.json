@@ -19,6 +19,8 @@
       ],
       "dest": "/api/paypal-ipn"
     },
+    { "src": "/brochure", "dest": "/brochure/index.html" },
+    { "src": "/brochure/", "dest": "/brochure/index.html" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
