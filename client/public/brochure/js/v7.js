@@ -1,0 +1,6 @@
+const buttons=[...document.querySelectorAll('[data-view]')];
+const views=[...document.querySelectorAll('.sheet')];
+const exportButton=document.getElementById('exportPng');
+function showView(id){views.forEach(view=>view.classList.toggle('is-visible',view.id===id));buttons.forEach(button=>button.classList.toggle('is-active',button.dataset.view===id));}
+buttons.forEach(button=>button.addEventListener('click',()=>showView(button.dataset.view)));
+exportButton?.addEventListener('click',async()=>{const view=document.querySelector('.sheet.is-visible');if(!view||typeof html2canvas==='undefined')return;const old=exportButton.textContent;exportButton.disabled=true;exportButton.textContent='Rendering…';try{await document.fonts?.ready;const canvas=await html2canvas(view,{scale:3,useCORS:true,backgroundColor:'#faf7ef',logging:false});const link=document.createElement('a');link.download=`new-hope-brochure-v10-${view.id}.png`;link.href=canvas.toDataURL('image/png',1);link.click();}finally{exportButton.disabled=false;exportButton.textContent=old;}});
