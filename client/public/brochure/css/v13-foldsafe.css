@@ -1,0 +1,59 @@
+/* V13.3 — visible redesign pass + true fold-safe zones */
+:root{--fold-safe:1.35%}
+/* Fold guides are guides only. All foreground objects are kept away from them. */
+.fold{width:0;border-left:1px dashed rgba(18,54,70,.28);z-index:60}
+
+/* INTERIOR: stronger photographic field, less dead paper, larger readable copy */
+.inside .story-head{left:3.2%;top:4.2%;width:27.8%}
+.inside .story-head .inf-title{font-size:35px}
+.inside .story-head p:last-child{font-size:8px;line-height:1.42}
+.timeline{left:3.2%;top:23%;width:27.5%;grid-template-columns:40px 1fr;gap:5px 7px}
+.timeline b{font-size:7.8px}.timeline span{font-size:6.6px;line-height:1.3}
+.mission{left:3.2%;top:40.5%;width:27.5%;font-size:7px;padding:11px 13px}
+.campus{left:0;top:50%;width:31.7%;height:47%;clip-path:polygon(0 7%,22% 0,49% 6%,76% 1%,100% 7%,100% 100%,0 100%)}
+
+.program-head{left:35.1%;top:4.2%;width:28.2%}.program-head .inf-title{font-size:34px}.program-head>p:last-child{font-size:7.8px;line-height:1.4}
+.p1{left:35.1%;top:22%;width:19.8%;height:22%;transform:rotate(-1deg)}
+.p2{left:55.5%;top:20%;width:9.5%;height:24%;transform:rotate(1deg)}
+.p3{left:35.2%;top:46%;width:20%;height:21%;transform:rotate(1deg)}
+.program-orbit{left:56.2%;top:46%;width:78px;height:78px;border-width:6px}
+.chico{left:56%;top:58%;width:9.1%}.study{left:43.5%;top:68%;width:18.8%}
+
+.life-head{right:3.1%;top:4.2%;width:28.3%}.life-head .inf-title{font-size:34px}
+.lm1{left:68.3%;top:21%;width:14.5%;height:25%;transform:rotate(-1deg)}
+.lm2{left:83.3%;top:19%;width:13.7%;height:23%;transform:rotate(1deg)}
+.lm3{left:69%;top:47%;width:28%;height:21%;transform:rotate(-1deg)}
+.lm4{left:68.5%;top:70%;width:13.5%;height:23%;transform:rotate(1deg)}
+.community{left:82.5%;top:70%;width:14.5%;height:23%}
+.life-tags{left:35.3%;bottom:3%;width:29.4%;height:19%}.life-tags .tag:nth-child(1){left:0;width:31%}.life-tags .tag:nth-child(2){left:34%;width:31%}.life-tags .tag:nth-child(3){left:68%;width:32%}
+.leaders{left:3%;bottom:2.5%;width:28.2%;padding:9px 11px}.leaders small{font-size:5.8px}.leaders b{font-size:6.5px}.leaders span{font-size:5.5px}
+.inside .hand1{left:24%;top:47%}.inside .hand2{right:3%;bottom:1.3%}
+
+/* EXTERIOR: every functional face gets its own safe interior margin. */
+.back-head{left:3.2%;top:5.2%;width:27.5%}.back-head .inf-title{font-size:35px}.back-head>p:last-child{font-size:8px;line-height:1.43}
+.people-photo{left:2.2%;top:30%;width:28.6%;height:38%;transform:rotate(-1deg)}
+.people-photo2{left:18.5%;top:58%;width:12%;height:24%;transform:rotate(2deg)}
+.people-caption{left:3.2%;bottom:4.5%;width:27.3%;font-size:6.8px}
+.outside .hand1{left:24%;top:25%}
+
+.action-head{left:36%;top:5.2%;width:27.5%}.action-head .inf-title{font-size:35px}.action-head>p:last-child{font-size:8px;line-height:1.43}
+.giving{left:36%;top:29%;width:27.4%;gap:8px}.giving div{padding:11px}.giving b{font-size:17px}.giving span{font-size:6.4px;line-height:1.28}
+.join{left:36%;top:52%;width:27.4%;gap:7px}.join span{font-size:7px;padding:9px}
+.donor-photo{left:39%;bottom:10%;width:21.5%;height:26%}
+.contact{left:36%;right:36%;bottom:2.6%;font-size:6.7px}
+.outside .hand2{left:52%;top:69%}
+
+/* Cover stays visually bold but nothing critical sits on the 66.666% crease. */
+.outside .cover-photo{right:0;top:18%;width:31.8%;height:69%;clip-path:polygon(4% 0,100% 5%,100% 100%,0 93%)}
+.cover-logo{right:24%;top:5%}.cover-copy{right:2.6%;bottom:6%;width:28.2%}.cover-copy h1{font-size:46px}.cover-copy p{font-size:8.5px}
+
+/* Reserve an actual quiet strip around each crease for text/cards/photos. Background shapes may flow behind it. */
+.inside .story-head,.inside .timeline,.inside .mission,.inside .leaders,.inside .campus,
+.inside .program-head,.inside .p1,.inside .p2,.inside .p3,.inside .program-orbit,.inside .chico,.inside .study,.inside .life-tags,
+.inside .life-head,.inside .lm1,.inside .lm2,.inside .lm3,.inside .lm4,.inside .community,
+.outside .back-head,.outside .people-photo,.outside .people-photo2,.outside .people-caption,.outside .action-head,.outside .giving,.outside .join,.outside .donor-photo,.outside .contact,.outside .cover-photo,.outside .cover-copy{max-width:calc(100% - 2 * var(--fold-safe))}
+
+@media print{
+  .fold{border-left:0!important}
+  /* Guides disappear completely on final PDF/print. Safe zones remain in the layout. */
+}
