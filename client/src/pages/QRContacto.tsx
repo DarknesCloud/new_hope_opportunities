@@ -1,37 +1,10 @@
 import { FormEvent, useEffect, useState } from "react";
 import { ArrowUpRight, Heart, Mail, MessageCircle, Send } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
 import "./QRContacto.css";
 
 const whatsappNumber = "15305664003";
 
-const copy = {
-  es: {
-    eyebrow: "UN ENCUENTRO PUEDE CAMBIAR UNA HISTORIA",
-    title: "Conversemos sobre esperanza.",
-    intro: "Gracias por conocer New Hope Opportunities. Cuéntanos cómo te gustaría acercarte a nuestra labor y prepara un mensaje para nuestro equipo.",
-    formTitle: "Da el primer paso",
-    name: "Tu nombre",
-    namePlaceholder: "¿Cómo te llamas?",
-    email: "Tu correo electrónico (para recibir respuesta)",
-    emailPlaceholder: "nombre@correo.com",
-    interest: "Me interesa",
-    options: ["Conocer New Hope", "Donar", "Ser voluntario", "Visitar o participar en una misión", "Crear una alianza", "Otro motivo"],
-    message: "Tu mensaje",
-    messagePlaceholder: "Hola, conocí New Hope en el brochure y quisiera saber más...",
-    button: "Enviar por correo",
-    whatsapp: "Escribir por WhatsApp",
-    sending: "Enviando...",
-    success: "Mensaje enviado por correo. Gracias por escribirnos.",
-    error: "No pudimos enviar el correo. Intenta de nuevo o escríbenos por WhatsApp.",
-    notice: "Para enviar por correo, escribe tu nombre y correo. WhatsApp abrirá un mensaje que podrás revisar y enviar.",
-    site: "Explorar el sitio web",
-    footer: "Educación · Fe · Comunidad · Oportunidad",
-    defaultMessage: "Hola, conocí New Hope Opportunities a través de su brochure y quisiera recibir más información.",
-    prefix: "Hola, soy",
-    about: "Me interesa:",
-  },
-  en: {
+const t = {
     eyebrow: "ONE CONNECTION CAN CHANGE A STORY",
     title: "Let's talk about hope.",
     intro: "Thank you for getting to know New Hope Opportunities. Tell us how you would like to connect with our work and prepare a message for our team.",
@@ -55,12 +28,9 @@ const copy = {
     defaultMessage: "Hello, I learned about New Hope Opportunities through your brochure and would like more information.",
     prefix: "Hello, my name is",
     about: "I'm interested in:",
-  },
 } as const;
 
 export function QRContacto() {
-  const { language, setLanguage } = useLanguage();
-  const t = copy[language];
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [interest, setInterest] = useState("");
@@ -72,13 +42,16 @@ export function QRContacto() {
 
   useEffect(() => {
     const previousTitle = document.title;
+    const previousLanguage = document.documentElement.lang;
     document.title = "Connect with New Hope Opportunities";
+    document.documentElement.lang = "en";
     const robots = document.createElement("meta");
     robots.name = "robots";
     robots.content = "noindex, nofollow";
     document.head.appendChild(robots);
     return () => {
       document.title = previousTitle;
+      document.documentElement.lang = previousLanguage;
       robots.remove();
     };
   }, []);
@@ -133,11 +106,6 @@ export function QRContacto() {
         <a href="/" aria-label="New Hope Opportunities - home" className="qr-contact__brand">
           <img src="/new-hope-logo.png" alt="New Hope Opportunities Honduras" />
         </a>
-        <div className="qr-contact__language" aria-label="Language / Idioma">
-          <button type="button" className={language === "es" ? "active" : ""} onClick={() => setLanguage("es")} aria-pressed={language === "es"}>ES</button>
-          <span aria-hidden="true">/</span>
-          <button type="button" className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
-        </div>
       </header>
 
       <div className="qr-contact__content">
