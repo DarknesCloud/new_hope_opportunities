@@ -5,7 +5,7 @@ const SUBJECTS = {
 };
 
 const FROM_EMAIL = "newhope@fenixsolutionshn.com";
-const DEFAULT_DESTINATION = "aldairleiva24@gmail.com";
+const DEFAULT_DESTINATION = "marnec@nhohonduras.org";
 const ALLOWED_HOSTS = new Set(["nhohonduras.org", "www.nhohonduras.org"]);
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT = 6;
@@ -158,7 +158,8 @@ export default async function handler(request, response) {
   // Every public form must originate from the live UI, remain open long enough
   // for a human interaction, and leave the invisible honeypot empty.
   if (!passesAntiBotCheck(body)) {
-    return response.status(200).json({ ok: true });
+    if (String(body?.meta?.honeypot || "").trim()) return response.status(200).json({ ok: true });
+    return response.status(400).json({ ok: false, error: "Please wait a moment before submitting" });
   }
 
   if (!hasValidRequiredFields(formType, payload)) {

@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { ArrowUpRight, Heart, MessageCircle, Send } from "lucide-react";
+import { ArrowUpRight, Heart, Mail, MessageCircle, Send } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import "./QRContacto.css";
 
@@ -13,12 +13,18 @@ const copy = {
     formTitle: "Da el primer paso",
     name: "Tu nombre",
     namePlaceholder: "¿Cómo te llamas?",
+    email: "Tu correo electrónico (para recibir respuesta)",
+    emailPlaceholder: "nombre@correo.com",
     interest: "Me interesa",
     options: ["Conocer New Hope", "Donar", "Ser voluntario", "Visitar o participar en una misión", "Crear una alianza", "Otro motivo"],
     message: "Tu mensaje",
     messagePlaceholder: "Hola, conocí New Hope en el brochure y quisiera saber más...",
-    button: "Continuar en WhatsApp",
-    notice: "Se abrirá WhatsApp con tu mensaje listo para revisar. Tú decides si lo envías.",
+    button: "Enviar por correo",
+    whatsapp: "Escribir por WhatsApp",
+    sending: "Enviando...",
+    success: "Mensaje enviado por correo. Gracias por escribirnos.",
+    error: "No pudimos enviar el correo. Intenta de nuevo o escríbenos por WhatsApp.",
+    notice: "Para enviar por correo, escribe tu nombre y correo. WhatsApp abrirá un mensaje que podrás revisar y enviar.",
     site: "Explorar el sitio web",
     footer: "Educación · Fe · Comunidad · Oportunidad",
     defaultMessage: "Hola, conocí New Hope Opportunities a través de su brochure y quisiera recibir más información.",
@@ -32,12 +38,18 @@ const copy = {
     formTitle: "Take the first step",
     name: "Your name",
     namePlaceholder: "What should we call you?",
+    email: "Your email (so we can reply)",
+    emailPlaceholder: "name@email.com",
     interest: "I'm interested in",
     options: ["Learning about New Hope", "Giving", "Volunteering", "Visiting or joining a mission trip", "Partnering", "Something else"],
     message: "Your message",
     messagePlaceholder: "Hello, I found New Hope through your brochure and would love to learn more...",
-    button: "Continue to WhatsApp",
-    notice: "WhatsApp will open with your message ready to review. You decide whether to send it.",
+    button: "Send by email",
+    whatsapp: "Message on WhatsApp",
+    sending: "Sending...",
+    success: "Your email was sent. Thank you for reaching out.",
+    error: "We couldn't send your email. Please try again or contact us on WhatsApp.",
+    notice: "For email, enter your name and email address. WhatsApp opens a message for you to review and send.",
     site: "Explore the website",
     footer: "Education · Faith · Community · Opportunity",
     defaultMessage: "Hello, I learned about New Hope Opportunities through your brochure and would like more information.",
@@ -50,8 +62,13 @@ export function QRContacto() {
   const { language, setLanguage } = useLanguage();
   const t = copy[language];
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [interest, setInterest] = useState("");
   const [message, setMessage] = useState("");
+  const [website, setWebsite] = useState("");
+  const [startedAt, setStartedAt] = useState(() => Date.now());
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState<"success" | "error" | null>(null);
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -66,13 +83,47 @@ export function QRContacto() {
     };
   }, []);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function whatsappMessage() {
     const parts = [name.trim() ? `${t.prefix} ${name.trim()}.` : t.defaultMessage];
     if (interest) parts.push(`${t.about} ${t.options[Number(interest)]}.`);
     if (message.trim()) parts.push(message.trim());
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(parts.join("\n\n"))}`;
+    return parts.join("\n\n");
+  }
+
+  function openWhatsApp() {
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage())}`;
     window.location.assign(url);
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (sending) return;
+    setSending(true);
+    setStatus(null);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formType: "contact",
+          data: {
+            fullName: name.trim(), email: email.trim(),
+            subject: interest ? t.options[Number(interest)] : "Brochure QR inquiry",
+            message: message.trim() || whatsappMessage(),
+            page: window.location.href,
+          },
+          meta: { honeypot: website, startedAt },
+        }),
+      });
+      if (!response.ok) throw new Error("Email delivery failed");
+      setStatus("success");
+      setName(""); setEmail(""); setInterest(""); setMessage("");
+      setStartedAt(Date.now());
+    } catch {
+      setStatus("error");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -103,7 +154,10 @@ export function QRContacto() {
           <h2 id="qr-form-title">{t.formTitle}</h2>
           <form onSubmit={handleSubmit}>
             <label htmlFor="qr-name">{t.name}</label>
-            <input id="qr-name" value={name} onChange={event => setName(event.target.value)} placeholder={t.namePlaceholder} maxLength={80} autoComplete="name" />
+            <input id="qr-name" value={name} onChange={event => setName(event.target.value)} placeholder={t.namePlaceholder} maxLength={80} minLength={2} autoComplete="name" required />
+
+            <label htmlFor="qr-email">{t.email}</label>
+            <input id="qr-email" type="email" value={email} onChange={event => setEmail(event.target.value)} placeholder={t.emailPlaceholder} maxLength={180} autoComplete="email" required />
 
             <label htmlFor="qr-interest">{t.interest}</label>
             <select id="qr-interest" value={interest} onChange={event => setInterest(event.target.value)}>
@@ -114,7 +168,10 @@ export function QRContacto() {
             <label htmlFor="qr-message">{t.message}</label>
             <textarea id="qr-message" value={message} onChange={event => setMessage(event.target.value)} placeholder={t.messagePlaceholder} maxLength={1500} rows={3} />
 
-            <button className="qr-contact__submit" type="submit">{t.button}<Send size={18} /></button>
+            <div className="qr-contact__honeypot" aria-hidden="true"><label htmlFor="qr-website">Website</label><input id="qr-website" tabIndex={-1} autoComplete="off" value={website} onChange={event => setWebsite(event.target.value)} /></div>
+            <button className="qr-contact__submit" type="submit" disabled={sending}>{sending ? t.sending : t.button}<Mail size={18} /></button>
+            <button className="qr-contact__whatsapp" type="button" onClick={openWhatsApp}>{t.whatsapp}<Send size={18} /></button>
+            {status && <p className={`qr-contact__feedback qr-contact__feedback--${status}`} role="status">{t[status]}</p>}
             <p className="qr-contact__notice">{t.notice}</p>
           </form>
         </section>
