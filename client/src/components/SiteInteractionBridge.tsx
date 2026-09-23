@@ -58,6 +58,7 @@ function goToHopeBuilderForm() {
 }
 
 function isProtectedForm(form: HTMLFormElement) {
+  if (form.dataset.contactManaged === "true") return false;
   const hasContactFields =
     !!form.querySelector('[name="email"]') &&
     !!form.querySelector('[name="message"]') &&
@@ -141,6 +142,7 @@ export function SiteInteractionBridge() {
     const handleSubmit = (event: SubmitEvent) => {
       const form = event.target;
       if (!(form instanceof HTMLFormElement)) return;
+      if (form.dataset.contactManaged === "true") return;
 
       const values = formValues(form);
       const hasContactFields =
