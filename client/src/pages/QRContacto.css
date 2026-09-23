@@ -175,6 +175,26 @@
   transition: background .2s, transform .2s;
 }
 .qr-contact__submit:hover { background: #205468; transform: translateY(-2px); }
+.qr-contact__submit:disabled { opacity: .65; cursor: wait; transform: none; }
+.qr-contact__whatsapp {
+  margin-top: 11px;
+  border: 1px solid #b5c6c9;
+  border-radius: 12px;
+  color: var(--qr-navy);
+  background: #fff;
+  min-height: 53px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 11px;
+  font-size: .94rem;
+  font-weight: 800;
+}
+.qr-contact__whatsapp:hover { background: #f2f7f5; }
+.qr-contact__feedback { margin: 13px 0 0; font-size: .85rem; line-height: 1.5; }
+.qr-contact__feedback--success { color: #216b44; }
+.qr-contact__feedback--error { color: #ae3630; }
+.qr-contact__honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .qr-contact__submit:focus-visible,
 .qr-contact a:focus-visible,
 .qr-contact button:focus-visible { outline: 3px solid #b88700; outline-offset: 3px; }
