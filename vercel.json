@@ -4,12 +4,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "headers": [
-    {
-      "source": "/qr/contacto",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
-    }
-  ],
   "routes": [
     {
       "src": "/",
@@ -27,6 +21,11 @@
     },
     { "src": "/brochure", "dest": "/brochure/index.html" },
     { "src": "/brochure/", "dest": "/brochure/index.html" },
+    {
+      "src": "/qr/contacto/?",
+      "dest": "/index.html",
+      "headers": { "X-Robots-Tag": "noindex, nofollow" }
+    },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
