@@ -72,7 +72,7 @@ const contactCopy: Record<"es" | "en", ContactCopy> = {
       message: "Mensaje",
     },
     submit: "Enviar mensaje",
-    submitted: "Mensaje preparado para seguimiento",
+    submitted: "Mensaje enviado correctamente",
     contactTitle: "Canales de atención",
     contactBody:
       "Centralizamos las solicitudes para responder con orden, trazabilidad y acompañamiento adecuado para cada tipo de aliado.",
@@ -113,7 +113,7 @@ const contactCopy: Record<"es" | "en", ContactCopy> = {
       message: "Message",
     },
     submit: "Send message",
-    submitted: "Message prepared for follow-up",
+    submitted: "Message sent successfully",
     contactTitle: "Contact channels",
     contactBody:
       "We centralize requests to respond with order, traceability, and appropriate accompaniment for each partner type.",
@@ -184,6 +184,10 @@ export function Contacto() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
+  const [website, setWebsite] = useState("");
+  const [startedAt, setStartedAt] = useState(() => Date.now());
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -192,10 +196,24 @@ export function Contacto() {
     setFormData(current => ({ ...current, [name]: value }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitted(true);
-    window.setTimeout(() => {
+    if (sending) return;
+    setSending(true);
+    setSendError(false);
+    setSubmitted(false);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formType: "contact",
+          data: { ...formData, page: window.location.href },
+          meta: { startedAt, honeypot: website },
+        }),
+      });
+      if (!response.ok) throw new Error("Email delivery failed");
+      setSubmitted(true);
       setFormData({
         fullName: "",
         email: "",
@@ -203,8 +221,12 @@ export function Contacto() {
         subject: "",
         message: "",
       });
-      setSubmitted(false);
-    }, 2800);
+      setStartedAt(Date.now());
+    } catch {
+      setSendError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -298,6 +320,7 @@ export function Contacto() {
             <Box
               className="hope-card-premium"
               component="form"
+              data-contact-managed="true"
               onSubmit={handleSubmit}
               sx={{ p: { xs: 3, md: 4.5 } }}
             >
@@ -398,6 +421,7 @@ export function Contacto() {
 
               <Button
                 type="submit"
+                disabled={sending}
                 variant="contained"
                 endIcon={
                   submitted ? <CheckCircle2 size={18} /> : <Send size={18} />
@@ -415,8 +439,10 @@ export function Contacto() {
                   },
                 }}
               >
-                {submitted ? copy.submitted : copy.submit}
+                {sending ? (language === "es" ? "Enviando..." : "Sending...") : submitted ? copy.submitted : copy.submit}
               </Button>
+              {sendError && <Typography role="alert" sx={{ mt: 2, color: "#ae3630" }}>{language === "es" ? "No pudimos enviar tu mensaje. Inténtalo nuevamente o escríbenos por correo." : "We couldn't send your message. Please try again or email us directly."}</Typography>}
+              <Box sx={{ position: "absolute", left: "-10000px", width: 1, height: 1, overflow: "hidden" }} aria-hidden="true"><input name="website" tabIndex={-1} autoComplete="off" value={website} onChange={event => setWebsite(event.target.value)} /></Box>
             </Box>
 
             <Box sx={{ display: "grid", gap: 2 }}>
