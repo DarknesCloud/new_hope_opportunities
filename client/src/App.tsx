@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
+import { useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { MuiThemeProviderWrapper } from "./contexts/MuiThemeProvider";
@@ -19,6 +20,7 @@ import { Programas } from "./pages/Programas";
 import { Donar } from "./pages/Donar";
 import About from "./pages/About";
 import HopeBuilders from "./pages/HopeBuilders";
+import { QRContacto } from "./pages/QRContacto";
 
 import { ProgramLaGarra } from "./pages/ProgramLaGarra";
 import { ProgramBandaPaz } from "./pages/ProgramBandaPaz";
@@ -30,6 +32,7 @@ import { ProgramViajesMisioneros } from "./pages/ProgramViajesMisioneros";
 function Router() {
   return (
     <Switch>
+      <Route path={"/qr/contacto"} component={QRContacto} />
       <Route path={"/"} component={Home} />
       <Route path={"/acerca-de"} component={About} />
       <Route path={"/hope-builders"} component={HopeBuilders} />
@@ -51,6 +54,8 @@ function Router() {
 }
 
 function App() {
+  const [location] = useLocation();
+  const isQrContact = location === "/qr/contacto";
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
@@ -58,14 +63,14 @@ function App() {
           <LanguageProvider defaultLanguage="es">
             <TooltipProvider>
               <ScrollToTop />
-              <SiteInteractionBridge />
+              {!isQrContact && <SiteInteractionBridge />}
               <Toaster />
-              <Navbar />
-              <div className="pt-[76px] md:pt-[88px]">
+              {!isQrContact && <Navbar />}
+              <div className={isQrContact ? undefined : "pt-[76px] md:pt-[88px]"}>
                 <Router />
               </div>
-              <DeveloperCredit />
-              <ChatbotWidget />
+              {!isQrContact && <DeveloperCredit />}
+              {!isQrContact && <ChatbotWidget />}
             </TooltipProvider>
           </LanguageProvider>
         </MuiThemeProviderWrapper>
