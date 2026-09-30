@@ -9,7 +9,7 @@ import {
 import {
   Building2,
   CheckCircle2,
-  Clock3,
+  Phone,
   Mail,
   MapPin,
   Send,
@@ -114,32 +114,14 @@ const contactCopy: Record<"es" | "en", ContactCopy> = {
     },
     submit: "Send message",
     submitted: "Message sent successfully",
-    contactTitle: "Contact channels",
+    contactTitle: "Contact information",
     contactBody:
-      "We centralize requests to respond with order, traceability, and appropriate accompaniment for each partner type.",
-    cards: [
-      {
-        title: "Foundations and partnerships",
-        body: "Strategic cooperation, institutional backing, and social investment opportunities.",
-      },
-      {
-        title: "Donors and sponsorship",
-        body: "Guidance on monthly support, one-time donations, and impact story follow-up.",
-      },
-      {
-        title: "Companies and volunteering",
-        body: "Corporate responsibility proposals, technical mentorship, and professional support.",
-      },
-    ],
-    trustTitle: "Trust signals",
-    trustItems: [
-      "Secure institutional communication",
-      "Request traceability",
-      "Tax support available when applicable",
-      "Financial and impact reports upon request",
-    ],
+      "Reach New Hope Opportunities directly by location, phone, or email. For detailed requests, use the contact form and our team will follow up."
+    cards: [],
+    trustTitle: "",
+    trustItems: [],
     officeLabel: "Location",
-    responseLabel: "Response time",
+    responseLabel: "Phone",
     emailLabel: "Email",
   },
 };
@@ -510,7 +492,7 @@ export function Contacto() {
                   <Box
                     sx={{ display: "flex", gap: 1.4, alignItems: "flex-start" }}
                   >
-                    <Clock3
+                    <Phone
                       size={18}
                       color={tokens.color.hopeGold}
                       style={{ marginTop: 3 }}
@@ -599,18 +581,19 @@ export function Contacto() {
                 </Box>
               </Box>
 
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: {
-                    xs: "1fr",
-                    sm: "repeat(3, 1fr)",
-                    lg: "1fr",
-                  },
-                  gap: 1.4,
-                }}
-              >
-                {copy.cards.map(card => (
+              {copy.cards.length > 0 ? (
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: {
+                      xs: "1fr",
+                      sm: "repeat(3, 1fr)",
+                      lg: "1fr",
+                    },
+                    gap: 1.4,
+                  }}
+                >
+                  {copy.cards.map(card => (
                   <Box
                     key={card.title}
                     className="hope-card-base"
@@ -647,10 +630,12 @@ export function Contacto() {
                       {card.body}
                     </Typography>
                   </Box>
-                ))}
-              </Box>
+                  ))}
+                </Box>
+              ) : null}
 
-              <Box className="hope-card-base" sx={{ p: 2.6 }}>
+              {copy.trustItems.length > 0 ? (
+                <Box className="hope-card-base" sx={{ p: 2.6 }}>
                 <Typography
                   sx={{
                     color: tokens.color.graphite,
@@ -684,6 +669,7 @@ export function Contacto() {
                   ))}
                 </Box>
               </Box>
+              ) : null}
             </Box>
           </Box>
         </Container>
