@@ -5,32 +5,45 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const content = {
   es: {
     title: "Instituciones que apoyan a New Hope Opportunities",
+    subtitle:
+      "Estas organizaciones han acompañado el trabajo de New Hope Opportunities mediante educación, desarrollo comunitario y servicio.",
     benefits: [
       {
-        title: "Perspectiva Global",
+        title: "UNITEC",
+        description: "Colaboración educativa y profesional.",
         image: "/assets/alianzas/unitec.png",
       },
       {
-        title: "Comunidad Solidaria",
+        title: "CEPUDO",
+        description: "Apoyo al desarrollo comunitario y a iniciativas de servicio.",
         image: "/assets/alianzas/cepudo.jpg",
       },
       {
-        title: "Impacto Tangible",
+        title: "Operación Bendición",
+        description: "Acompañamiento a iniciativas comunitarias y humanitarias.",
         image: "/assets/alianzas/operacion.jpg",
       },
     ],
   },
   en: {
     title: "Institutions supporting New Hope Opportunities",
+    subtitle:
+      "These organizations have supported New Hope Opportunities through education, community development, and service.",
     benefits: [
       {
-        title: "Global Perspective",
+        title: "UNITEC",
+        description: "Educational and professional collaboration.",
+        image: "/assets/alianzas/unitec.png",
       },
       {
-        title: "Supportive Community",
+        title: "CEPUDO",
+        description: "Support for community development and service initiatives.",
+        image: "/assets/alianzas/cepudo.jpg",
       },
       {
-        title: "Tangible Impact",
+        title: "Operación Bendición",
+        description: "Support for community and humanitarian initiatives.",
+        image: "/assets/alianzas/operacion.jpg",
       },
     ],
   },
@@ -73,8 +86,21 @@ export function WhatItMeansHopeBuilder() {
               backgroundColor: tokens.color.hopeGold,
               borderRadius: "999px",
               mx: "auto",
+              mb: 2.5,
             }}
           />
+          <Typography
+            sx={{
+              maxWidth: 760,
+              mx: "auto",
+              color: tokens.color.graphiteSoft,
+              fontFamily: tokens.font.body,
+              fontSize: { xs: "0.98rem", md: "1.05rem" },
+              lineHeight: 1.75,
+            }}
+          >
+            {copy.subtitle}
+          </Typography>
         </Box>
 
         {/* Cards */}
@@ -171,6 +197,18 @@ export function WhatItMeansHopeBuilder() {
                     }}
                   >
                     {benefit.title}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "rgba(255,255,255,0.82)",
+                      fontFamily: tokens.font.body,
+                      fontSize: "0.9rem",
+                      lineHeight: 1.5,
+                      mt: 0.8,
+                      textShadow: "0 2px 8px rgba(0,0,0,.35)",
+                    }}
+                  >
+                    {benefit.description}
                   </Typography>
                 </Box>
               </Box>
