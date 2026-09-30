@@ -88,17 +88,19 @@ const baseTimelineEvents: TimelineEvent[] = [
   },
 ];
 
-const timelineEvents = [...baseTimelineEvents, ...baseTimelineEvents];
+const timelineEvents = baseTimelineEvents;
 
 const copy = {
   es: {
     title: "Nuestra Historia",
     subtitle:
       "Dos décadas sembrando educación y esperanza en Rivera Hernández.",
+    hint: "Desliza horizontalmente para recorrer la historia.",
   },
   en: {
     title: "Our History",
     subtitle: "Two decades sowing education and hope in Rivera Hernández.",
+    hint: "Scroll horizontally to explore the timeline.",
   },
 } as const;
 
@@ -168,38 +170,38 @@ export function HistoricalTimeline() {
           >
             {content.subtitle}
           </Typography>
+          <Typography
+            sx={{
+              mt: 1.2,
+              color: tokens.color.graphiteMuted,
+              fontSize: "0.82rem",
+              fontWeight: 650,
+            }}
+          >
+            {content.hint}
+          </Typography>
         </Box>
       </Container>
 
-      {/* Carrusel Continuo Infinite Marquee */}
+      {/* Accessible horizontal timeline */}
       <Box
         sx={{
           position: "relative",
           width: "100%",
-          overflow: "hidden",
+          overflowX: "auto",
+          overflowY: "hidden",
           py: 2,
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: { xs: 40, md: 140 },
-            zIndex: 10,
-            pointerEvents: "none",
-            background: `linear-gradient(to right, ${tokens.color.ivory} 0%, transparent 100%)`,
+          px: { xs: 2, md: 4 },
+          scrollSnapType: "x mandatory",
+          WebkitOverflowScrolling: "touch",
+          scrollbarWidth: "thin",
+          scrollbarColor: `${tokens.color.hopeGold} transparent`,
+          "&::-webkit-scrollbar": { height: 8 },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: tokens.color.hopeGold,
+            borderRadius: 999,
           },
-          "&::after": {
-            content: '""',
-            position: "absolute",
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: { xs: 40, md: 140 },
-            zIndex: 10,
-            pointerEvents: "none",
-            background: `linear-gradient(to left, ${tokens.color.ivory} 0%, transparent 100%)`,
-          },
+          "&::-webkit-scrollbar-track": { backgroundColor: "transparent" },
         }}
       >
         <Box
@@ -207,14 +209,7 @@ export function HistoricalTimeline() {
             display: "flex",
             gap: 3.5,
             width: "max-content",
-            animation: "timelineMarquee 45s linear infinite",
-            "@keyframes timelineMarquee": {
-              from: { transform: "translateX(0)" },
-              to: { transform: "translateX(-50%)" },
-            },
-            "&:hover": {
-              animationPlayState: "paused",
-            },
+            pr: { xs: 2, md: 4 },
           }}
         >
           {timelineEvents.map((event, index) => {
@@ -233,6 +228,7 @@ export function HistoricalTimeline() {
                   flexShrink: 0,
                   py: 1,
                   cursor: "pointer",
+                  scrollSnapAlign: "start",
                 }}
               >
                 <Box sx={{ position: "relative", mb: 2, pt: 1 }}>
