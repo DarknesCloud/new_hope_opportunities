@@ -89,7 +89,7 @@ const footerCopy: Record<"es" | "en", Copy> = {
       { label: "Política de privacidad", href: "/privacidad" },
       { label: "Términos de uso", href: "/terminos" },
       { label: "Reportes financieros", href: "/transparencia" },
-      { label: "Deducibilidad fiscal", href: "/transparencia" },
+      { label: "Deducibilidad fiscal", href: "/donar#donation-receipt" },
     ],
     contactLines: {
       location: "Rivera Hernández, San Pedro Sula, Honduras",
@@ -134,7 +134,7 @@ const footerCopy: Record<"es" | "en", Copy> = {
       { label: "Privacy policy", href: "/privacidad" },
       { label: "Terms of use", href: "/terminos" },
       { label: "Financial reports", href: "/transparencia" },
-      { label: "Tax deductibility", href: "/transparencia" },
+      { label: "Tax deductibility", href: "/donar#donation-receipt" },
     ],
     contactLines: {
       location: "Rivera Hernández, San Pedro Sula, Honduras",
