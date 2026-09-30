@@ -120,7 +120,7 @@ const copy = {
           "Safe environment with local team support. Complete protection and genuine connection with the Rivera Hernández community.",
       },
     ],
-    accommodationTitle: "Our Lodgins Facilities",
+    accommodationTitle: "Our Lodging Facilities",
     accommodationSubtitle:
       "New Hope Opportunities Honduras offers fully equipped apartments located next to our educational facilities, designed to provide comfort, safety, and a welcoming atmosphere for visiting churches, missionary teams, and partner organizations from abroad. During their stay, guests can rest in a comfortable space while actively participating in our community programs and projects, enjoying an experience of service, fellowship, and immersion in Honduran culture.",
     ctaDownload: "Download Guide",
