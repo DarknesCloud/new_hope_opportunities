@@ -20,7 +20,7 @@ const newsCards: NewsCard[] = [
   {
     title: {
       es: "Refugio",
-      en: "Refuge",
+      en: "Refugio",
     },
     description: {
       es: "Refugio es un programa que brinda a niñas en situación de vulnerabilidad un espacio seguro donde pueden expresar sus emociones, fortalecer su relación con Dios y recibir apoyo para su crecimiento espiritual, emocional y personal. Actualmente, beneficia a estudiantes de cuarto grado en adelante mediante actividades recreativas, artísticas y de convivencia que promueven la sanidad interior, la confianza y la esperanza.",
@@ -31,7 +31,7 @@ const newsCards: NewsCard[] = [
   {
     title: {
       es: "La Garra",
-      en: "The Claw ",
+      en: "La Garra",
     },
     description: {
       es: "La Garra ofrece a los estudiantes varones una alternativa sana frente a los riesgos sociales, combinando la práctica deportiva con enseñanzas bíblicas para fortalecer su carácter, disciplina y valores cristianos. Actualmente, beneficia a alumnos de primaria y secundaria mediante el deporte, promoviendo el trabajo en equipo, el respeto y el amor al prójimo.",
