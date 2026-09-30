@@ -69,7 +69,7 @@ export function Donar() {
       </Box>
       <Box component="main" sx={{ flex: 1 }}>
         <DonationGateway />
-        <Box sx={{ py: { xs: 7, md: 10 }, borderTop: `1px solid ${tokens.color.line}` }}>
+        <Box id="donation-receipt" sx={{ py: { xs: 7, md: 10 }, borderTop: `1px solid ${tokens.color.line}`, scrollMarginTop: "110px" }}>
           <Container maxWidth="md">
             <Box sx={{ p: { xs: 3, md: 5 }, backgroundColor: tokens.color.warmWhite, border: `1px solid ${tokens.color.line}`, borderRadius: tokens.radius.lg }}>
               <Box sx={{ display: "flex", gap: 1, alignItems: "center", color: tokens.color.hopeGoldDark, mb: 1.5 }}><ReceiptLongRounded /><Typography sx={{ fontSize: ".78rem", fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase" }}>{content.receiptEyebrow}</Typography></Box>
