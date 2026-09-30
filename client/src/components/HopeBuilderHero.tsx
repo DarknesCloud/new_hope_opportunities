@@ -27,9 +27,8 @@ const content = {
 
 function scrollToRegistration() {
   document
-    .querySelector<HTMLInputElement>('input[name="donationAmount"]')
-    ?.closest("form")
-    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    .getElementById("hope-builder-registration")
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 export function HopeBuilderHero() {
