@@ -172,15 +172,15 @@ const content = {
       "New Hope Opportunities is a U.S.-registered 501(c)(3) non-profit corporation. Our accountability is presented as a living institutional report: clear, auditable, and designed so every donor understands how support becomes educational opportunity.",
     heroSeal: "U.S. Corporation · Audited funds · Traceability",
     sectionLabel: "Accountability",
-    allocationTitle: "Use of funds",
+    allocationTitle: "Priority areas for the use of funds",
     allocationIntro:
-      "Use of funds is communicated through priority investment areas, preserving rigor and avoiding numerical distributions that are not part of a published audit.",
-    audited: "Priority areas",
-    directImpact: "responsible use",
+      "These four categories show where support may be directed according to current program needs. They are not percentages or fixed allocations; formal financial figures are provided in reviewed reports.",
+    audited: "Four priority areas",
+    directImpact: "responsible uses",
     reportsTitle: "Annual reports and impact",
     reportsIntro:
-      "Impact and finance information is organized as a clear editorial experience, structured by year, evidence type, and review status.",
-    viewReport: "Explore report",
+      "Formal impact, financial, and planning documents are available from New Hope upon request. Select a document below and use the request button to contact our team.",
+    viewReport: "Request report",
     legitimacyTitle: "Certifications and partnerships",
     legitimacyIntro:
       "As a U.S. 501(c)(3) non-profit corporation, we provide core institutional guarantees for international donors: U.S. legal standing, governance, traceability, and tax-deductible contributions.",
@@ -226,7 +226,7 @@ const content = {
         title: "Educational impact report",
         description:
           "Learning outcomes, attendance, nutrition, and family accompaniment throughout the year.",
-        status: "Published",
+        status: "Available on request",
       },
       {
         year: "2025",
@@ -234,7 +234,7 @@ const content = {
         title: "Audited financial report",
         description:
           "Financial statements, fund allocation, and reviewed administrative controls.",
-        status: "Audited",
+        status: "Available on request",
       },
       {
         year: "2026",
@@ -242,7 +242,7 @@ const content = {
         title: "Annual operating plan",
         description:
           "Priorities, projected budget, and program goals for the next cycle.",
-        status: "Under review",
+        status: "Planning document",
       },
     ],
     signals: [
@@ -800,7 +800,13 @@ export function TransparencyTrust({
 
             <Button
               endIcon={<ArrowForwardRounded />}
-              href="/transparencia"
+              href={
+                page
+                  ? `mailto:marnec@nhohonduras.org?subject=${encodeURIComponent(
+                      `Report request: ${featuredReport.title} (${featuredReport.year})`
+                    )}`
+                  : "/transparencia"
+              }
               sx={{
                 mt: 2.5,
                 color: tokens.color.graphite,
@@ -808,7 +814,9 @@ export function TransparencyTrust({
                 textTransform: "none",
               }}
             >
-              {copy.viewReport}: {featuredReport.year}
+              {page
+                ? `${copy.viewReport}: ${featuredReport.year}`
+                : `${copy.viewReport}: ${featuredReport.year}`}
             </Button>
           </Box>
         </Box>
@@ -873,9 +881,13 @@ export function TransparencyTrust({
               <Button
                 variant="contained"
                 endIcon={<ArrowForwardRounded />}
-                href="/transparencia"
+                href={page ? "/contacto" : "/transparencia"}
               >
-                {copy.ctaPrimary}
+                {page
+                  ? language === "es"
+                    ? "Contactar al equipo"
+                    : "Contact our team"
+                  : copy.ctaPrimary}
               </Button>
               <Button
                 variant="outlined"
