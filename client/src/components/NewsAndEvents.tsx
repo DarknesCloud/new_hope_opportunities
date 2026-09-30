@@ -104,6 +104,7 @@ export function NewsAndEvents() {
 
   return (
     <Box
+      id="impact-programs"
       component="section"
       className="section-shell"
       sx={{
