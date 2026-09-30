@@ -117,9 +117,27 @@ const contactCopy: Record<"es" | "en", ContactCopy> = {
     contactTitle: "Contact information",
     contactBody:
       "Reach New Hope Opportunities directly by location, phone, or email. For detailed requests, use the contact form and our team will follow up."
-    cards: [],
-    trustTitle: "",
-    trustItems: [],
+    cards: [
+      {
+        title: "Partnerships and foundations",
+        body: "Ask about institutional partnerships, sponsorship opportunities, and ways to support specific areas of the mission.",
+      },
+      {
+        title: "Donations and tax receipts",
+        body: "Get help with donations, receipt requests, and tax-related documentation when applicable.",
+      },
+      {
+        title: "Mission teams and volunteering",
+        body: "Contact our team about mission trips, volunteer opportunities, dates, lodging, and service planning.",
+      },
+    ],
+    trustTitle: "What you can request",
+    trustItems: [
+      "Program and participation information",
+      "Donation and receipt support",
+      "Mission trip and volunteer planning",
+      "Financial and impact reports",
+    ],
     officeLabel: "Location",
     responseLabel: "Phone",
     emailLabel: "Email",
@@ -581,19 +599,18 @@ export function Contacto() {
                 </Box>
               </Box>
 
-              {copy.cards.length > 0 ? (
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: {
-                      xs: "1fr",
-                      sm: "repeat(3, 1fr)",
-                      lg: "1fr",
-                    },
-                    gap: 1.4,
-                  }}
-                >
-                  {copy.cards.map(card => (
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "repeat(3, 1fr)",
+                    lg: "1fr",
+                  },
+                  gap: 1.4,
+                }}
+              >
+                {copy.cards.map(card => (
                   <Box
                     key={card.title}
                     className="hope-card-base"
@@ -630,12 +647,10 @@ export function Contacto() {
                       {card.body}
                     </Typography>
                   </Box>
-                  ))}
-                </Box>
-              ) : null}
+                ))}
+              </Box>
 
-              {copy.trustItems.length > 0 ? (
-                <Box className="hope-card-base" sx={{ p: 2.6 }}>
+              <Box className="hope-card-base" sx={{ p: 2.6 }}>
                 <Typography
                   sx={{
                     color: tokens.color.graphite,
@@ -669,7 +684,6 @@ export function Contacto() {
                   ))}
                 </Box>
               </Box>
-              ) : null}
             </Box>
           </Box>
         </Container>
