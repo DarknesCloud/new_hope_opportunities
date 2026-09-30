@@ -10,7 +10,7 @@ const content = {
     section1Title: "Alcance Comunitario",
     section1Description:
       "Sé un Donante de Esperanza y únete a New Hope Opportunities Honduras para transformar vidas en la comunidad Rivera Hernández. Junto a iglesias, organizaciones y personas comprometidas, puedes apoyar programas de educación, desarrollo comunitario y formación en espiritual que brindan nuevas oportunidades a quienes más lo necesitan.",
-    section2Title: "Una asociación tangible",
+    section2Title: "¿Qué es un Hope Builder?",
     section2Description1:
       "Te invitamos a asociarte con New Hope Opportunities convirtiéndote en Hope Builder y jugando un papel tangible en la obra del ministerio. Creemos que el amor centrado en Cristo y la educación en la comunidad Rivera Hernández es clave para revertir la violencia, la pobreza y la injusticia que ha hecho que este barrio sea conocido internacionalmente.",
     section2Description2:
@@ -20,7 +20,7 @@ const content = {
     section1Title: "Community Outreach",
     section1Description:
       "Become a Donor of Hope and join New Hope Opportunities Honduras to transform lives in the Rivera Hernández community. Together with churches, organizations, and committed individuals, you can support education, community development, and spiritual formation programs that provide new opportunities to those who need them most.",
-    section2Title: "A tangible partnership",
+    section2Title: "What is a Hope Builder?",
     section2Description1:
       "We invite you to partner with New Hope Opportunities by becoming a Hope Builder and playing a tangible part in the work of the ministry. We believe that Christ-centered love and education in the Rivera Hernández community is key to reversing the violence, poverty and injustice that has made this neighborhood known internationally.",
     section2Description2:
@@ -108,7 +108,69 @@ export function HopeBuilderIntroduction() {
         </Box>
       </Container>
 
-      {/* Section 2: Text Left, Image Right */}
+      {/* Section 2: explicit Hope Builder definition */}
+      <Container
+        id="what-is-a-hope-builder"
+        maxWidth="lg"
+        sx={{ pb: { xs: 6, md: 9 } }}
+      >
+        <Box
+          sx={{
+            maxWidth: 920,
+            mx: "auto",
+            p: { xs: 3, md: 5 },
+            borderRadius: tokens.radius.xl,
+            backgroundColor: tokens.color.warmWhite,
+            border: `1px solid ${tokens.color.line}`,
+            boxShadow: tokens.shadow.subtle,
+          }}
+        >
+          <Typography
+            component="h2"
+            sx={{
+              fontFamily: tokens.font.display,
+              fontSize: { xs: "1.75rem", md: "2.35rem" },
+              fontWeight: 850,
+              color: tokens.color.graphite,
+              letterSpacing: "-0.055em",
+              lineHeight: 1.15,
+              mb: 2.5,
+            }}
+          >
+            {copy.section2Title}
+          </Typography>
+          <Box
+            sx={{
+              width: "3rem",
+              height: "0.35rem",
+              backgroundColor: tokens.color.hopeGold,
+              borderRadius: "999px",
+              mb: 3,
+            }}
+          />
+          <Typography
+            sx={{
+              fontFamily: tokens.font.body,
+              color: tokens.color.graphiteSoft,
+              fontSize: { xs: "1rem", md: "1.05rem" },
+              lineHeight: 1.8,
+              mb: 2,
+            }}
+          >
+            {copy.section2Description1}
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: tokens.font.body,
+              color: tokens.color.graphiteSoft,
+              fontSize: { xs: "1rem", md: "1.05rem" },
+              lineHeight: 1.8,
+            }}
+          >
+            {copy.section2Description2}
+          </Typography>
+        </Box>
+      </Container>
     </Box>
   );
 }
