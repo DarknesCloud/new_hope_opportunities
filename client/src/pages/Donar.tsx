@@ -70,15 +70,16 @@ export function Donar() {
           backgroundImage: `
             linear-gradient(
               90deg,
-              rgba(20, 20, 20, 0.94) 0%,
-              rgba(26, 26, 26, 0.88) 36%,
-              rgba(26, 26, 26, 0.58) 64%,
-              rgba(26, 26, 26, 0.30) 100%
+              rgba(12, 12, 12, 0.97) 0%,
+              rgba(16, 16, 16, 0.94) 30%,
+              rgba(20, 20, 20, 0.78) 54%,
+              rgba(20, 20, 20, 0.44) 78%,
+              rgba(20, 20, 20, 0.18) 100%
             ),
             linear-gradient(
               180deg,
-              rgba(20, 20, 20, 0.14) 0%,
-              rgba(20, 20, 20, 0.38) 100%
+              rgba(20, 20, 20, 0.20) 0%,
+              rgba(20, 20, 20, 0.48) 100%
             ),
             url(${donateHero})
           `,
@@ -117,7 +118,8 @@ export function Donar() {
               lineHeight: 1,
               letterSpacing: "-0.055em",
               mb: 2.5,
-              textShadow: "0 4px 28px rgba(0,0,0,0.34)",
+              color: "#ffffff",
+              textShadow: "0 6px 28px rgba(0,0,0,0.78)",
             }}
           >
             {content.title}
@@ -125,10 +127,11 @@ export function Donar() {
           <Typography
             sx={{
               maxWidth: 720,
-              color: "rgba(255,255,255,0.88)",
+              color: "rgba(255,255,255,0.98)",
               fontSize: { xs: "1rem", md: "1.12rem" },
               lineHeight: 1.8,
-              textShadow: "0 2px 18px rgba(0,0,0,0.30)",
+              fontWeight: 600,
+              textShadow: "0 3px 18px rgba(0,0,0,0.72)",
             }}
           >
             {content.subtitle}
