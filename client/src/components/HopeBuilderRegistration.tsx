@@ -90,6 +90,10 @@ export function HopeBuilderRegistration() {
     country: "",
     donationAmount: "30",
   });
+  const [sending, setSending] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [website, setWebsite] = useState("");
+  const [startedAt, setStartedAt] = useState(() => Date.now());
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -108,10 +112,52 @@ export function HopeBuilderRegistration() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission here
+    if (sending) return;
+
+    setSending(true);
+    setSubmitStatus("idle");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formType: "hope-builder",
+          data: {
+            ...formData,
+            page: window.location.href,
+          },
+          meta: {
+            startedAt,
+            honeypot: website,
+          },
+        }),
+      });
+
+      if (!response.ok) throw new Error("Hope Builder submission failed");
+
+      setSubmitStatus("success");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        streetAddress: "",
+        addressLine2: "",
+        city: "",
+        state: "",
+        zipCode: "",
+        country: "",
+        donationAmount: "30",
+      });
+      setStartedAt(Date.now());
+    } catch {
+      setSubmitStatus("error");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -181,6 +227,7 @@ export function HopeBuilderRegistration() {
           {/* Image Column */}
           <Grid item xs={12} md={6}>
             <Box
+              id="hope-builder-registration"
               component="form"
               onSubmit={handleSubmit}
               sx={{
@@ -191,6 +238,16 @@ export function HopeBuilderRegistration() {
                 height: "100%",
               }}
             >
+              <input
+                type="text"
+                name="website"
+                value={website}
+                onChange={event => setWebsite(event.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{ position: "absolute", left: "-10000px", width: 1, height: 1, opacity: 0 }}
+              />
               {/* Name Fields */}
               <Grid container spacing={2} sx={{ mb: 3 }}>
                 <Grid item xs={12} sm={6}>
@@ -542,6 +599,7 @@ export function HopeBuilderRegistration() {
               <Button
                 type="submit"
                 fullWidth
+                disabled={sending}
                 sx={{
                   backgroundColor: tokens.color.hopeGold,
                   color: tokens.color.graphite,
@@ -564,9 +622,45 @@ export function HopeBuilderRegistration() {
                   },
                 }}
               >
-                {copy.formFields.submit}
+                {sending
+                  ? language === "es"
+                    ? "Enviando…"
+                    : "Sending…"
+                  : copy.formFields.submit}
                 <ArrowRight size={20} strokeWidth={2} />
               </Button>
+              {submitStatus === "success" ? (
+                <Typography
+                  role="status"
+                  sx={{
+                    mt: 2,
+                    color: tokens.color.graphite,
+                    fontFamily: tokens.font.body,
+                    fontWeight: 700,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {language === "es"
+                    ? "Solicitud enviada. El equipo de New Hope se pondrá en contacto contigo."
+                    : "Request sent. The New Hope team will follow up with you."}
+                </Typography>
+              ) : null}
+              {submitStatus === "error" ? (
+                <Typography
+                  role="alert"
+                  sx={{
+                    mt: 2,
+                    color: "#a33a2b",
+                    fontFamily: tokens.font.body,
+                    fontWeight: 700,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {language === "es"
+                    ? "No pudimos enviar tu solicitud. Inténtalo nuevamente."
+                    : "We couldn't send your request. Please try again."}
+                </Typography>
+              ) : null}
             </Box>
           </Grid>
 
