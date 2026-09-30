@@ -70,7 +70,7 @@ const copy = {
     title: "New Hope Assistant",
     subtitle: "I can help you find what you need",
     welcome:
-      "Hi! I can guide you through donations, programs, mission trips, Hope Builders, and contact information. What would you like to know?",
+      "Hi! I can guide you through donations, impact programs, mission trips, Community Outreach, Hope Builders, and contact information. What would you like to know?",
     optionDonation: "Donations",
     optionMissions: "Mission Trips",
     optionProjects: "View Programs",
@@ -87,8 +87,8 @@ const copy = {
       "You can explore New Hope's programs and projects, including La Garra, Banda de la Paz, CHICOS, Refugio, Youth Camp, and other initiatives.",
     projectsAction: "View Programs",
     join:
-      "If you would like to become more involved, Hope Builders is the place to learn how to take part in the mission and register your interest.",
-    joinAction: "Go to Hope Builders",
+      "Hope Builders are recurring supporters who provide dependable monthly resources for New Hope's education, community development, and Christ-centered programs. You can learn what becoming a Hope Builder means and register your interest in Community Outreach.",
+    joinAction: "Learn About Hope Builders",
     contact:
       "You can write directly to the New Hope team using the website contact form. Your message will be sent to the team responsible for responding.",
     contactAction: "Open Contact",
@@ -153,6 +153,16 @@ function detectIntent(value: string): Intent {
 function navigate(path: string) {
   window.history.pushState({}, "", path);
   window.dispatchEvent(new PopStateEvent("popstate"));
+
+  const hash = path.includes("#") ? path.split("#")[1] : "";
+  if (hash) {
+    window.requestAnimationFrame(() => {
+      document.getElementById(hash)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }
 }
 
 export function ChatbotWidget() {
@@ -195,7 +205,7 @@ export function ChatbotWidget() {
           sender: "bot",
           action: {
             label: content.missionsAction,
-            path: "/programas/viajes-misioneros",
+            path: "/programas",
           },
         };
       case "projects":
@@ -203,14 +213,17 @@ export function ChatbotWidget() {
           id,
           text: content.projects,
           sender: "bot",
-          action: { label: content.projectsAction, path: "/programas" },
+          action: { label: content.projectsAction, path: "/#impact-programs" },
         };
       case "join":
         return {
           id,
           text: content.join,
           sender: "bot",
-          action: { label: content.joinAction, path: "/hope-builders" },
+          action: {
+            label: content.joinAction,
+            path: "/hope-builders#what-is-a-hope-builder",
+          },
         };
       case "contact":
         return {
