@@ -116,7 +116,7 @@ const contactCopy: Record<"es" | "en", ContactCopy> = {
     submitted: "Message sent successfully",
     contactTitle: "Contact information",
     contactBody:
-      "Reach New Hope Opportunities directly by location, phone, or email. For detailed requests, use the contact form and our team will follow up."
+      "Reach New Hope Opportunities directly by location, phone, or email. For detailed requests, use the contact form and our team will follow up.",
     cards: [
       {
         title: "Partnerships and foundations",
