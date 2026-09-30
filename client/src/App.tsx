@@ -21,6 +21,8 @@ import { Donar } from "./pages/Donar";
 import About from "./pages/About";
 import HopeBuilders from "./pages/HopeBuilders";
 import { QRContacto } from "./pages/QRContacto";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfUse from "./pages/TermsOfUse";
 
 import { ProgramLaGarra } from "./pages/ProgramLaGarra";
 import { ProgramBandaPaz } from "./pages/ProgramBandaPaz";
@@ -47,6 +49,8 @@ function Router() {
       <Route path={"/donar"} component={Donar} />
       <Route path={"/transparencia"} component={Transparencia} />
       <Route path={"/contacto"} component={Contacto} />
+      <Route path={"/privacidad"} component={PrivacyPolicy} />
+      <Route path={"/terminos"} component={TermsOfUse} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
