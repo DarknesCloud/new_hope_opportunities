@@ -12,9 +12,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { designTokens as tokens } from "@/theme/designTokens";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface TimelineEvent {
   year: number;
@@ -88,19 +90,31 @@ const baseTimelineEvents: TimelineEvent[] = [
   },
 ];
 
-const timelineEvents = baseTimelineEvents;
+const timelineEvents = [
+  ...baseTimelineEvents,
+  ...baseTimelineEvents,
+  ...baseTimelineEvents,
+];
 
 const copy = {
   es: {
     title: "Nuestra Historia",
     subtitle:
       "Dos décadas sembrando educación y esperanza en Rivera Hernández.",
-    hint: "Desliza horizontalmente para recorrer la historia.",
+    hint: "Desliza o arrastra libremente. El movimiento automático se pausa mientras exploras.",
+    previous: "Ver eventos anteriores",
+    next: "Ver eventos siguientes",
+    pause: "Pausar movimiento automático",
+    play: "Reanudar movimiento automático",
   },
   en: {
     title: "Our History",
     subtitle: "Two decades sowing education and hope in Rivera Hernández.",
-    hint: "Scroll horizontally to explore the timeline.",
+    hint: "Swipe or drag freely. Auto-scroll pauses while you explore.",
+    previous: "View earlier events",
+    next: "View later events",
+    pause: "Pause automatic movement",
+    play: "Resume automatic movement",
   },
 } as const;
 
@@ -109,6 +123,153 @@ export function HistoricalTimeline() {
   const content = copy[language];
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const resumeTimerRef = useRef<number | null>(null);
+  const interactionPausedRef = useRef(false);
+  const didDragRef = useRef(false);
+  const dragRef = useRef({
+    active: false,
+    startX: 0,
+    startScrollLeft: 0,
+  });
+
+  const clearResumeTimer = () => {
+    if (resumeTimerRef.current !== null) {
+      window.clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
+  };
+
+  const pauseForInteraction = () => {
+    interactionPausedRef.current = true;
+    clearResumeTimer();
+  };
+
+  const resumeAfterInteraction = (delay = 4200) => {
+    clearResumeTimer();
+    resumeTimerRef.current = window.setTimeout(() => {
+      interactionPausedRef.current = false;
+      resumeTimerRef.current = null;
+    }, delay);
+  };
+
+  const recenterScroller = () => {
+    const node = scrollerRef.current;
+    if (!node) return;
+
+    const segmentWidth = node.scrollWidth / 3;
+    if (!segmentWidth) return;
+
+    if (node.scrollLeft < segmentWidth * 0.45) {
+      node.scrollLeft += segmentWidth;
+    } else if (node.scrollLeft > segmentWidth * 1.55) {
+      node.scrollLeft -= segmentWidth;
+    }
+  };
+
+  const scrollTimeline = (direction: -1 | 1) => {
+    const node = scrollerRef.current;
+    if (!node) return;
+
+    pauseForInteraction();
+    node.scrollBy({
+      left: direction * Math.min(node.clientWidth * 0.78, 620),
+      behavior: "smooth",
+    });
+    resumeAfterInteraction();
+  };
+
+  useEffect(() => {
+    const node = scrollerRef.current;
+    if (!node) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    const initialize = window.requestAnimationFrame(() => {
+      const segmentWidth = node.scrollWidth / 3;
+      if (segmentWidth) node.scrollLeft = segmentWidth;
+    });
+
+    let lastTimestamp: number | null = null;
+
+    const animate = (timestamp: number) => {
+      if (lastTimestamp === null) lastTimestamp = timestamp;
+      const delta = Math.min(timestamp - lastTimestamp, 50);
+      lastTimestamp = timestamp;
+
+      if (
+        autoPlayEnabled &&
+        !reducedMotion &&
+        !interactionPausedRef.current &&
+        !dragRef.current.active
+      ) {
+        node.scrollLeft += delta * 0.024;
+        recenterScroller();
+      }
+
+      animationFrameRef.current = window.requestAnimationFrame(animate);
+    };
+
+    animationFrameRef.current = window.requestAnimationFrame(animate);
+
+    return () => {
+      window.cancelAnimationFrame(initialize);
+      if (animationFrameRef.current !== null) {
+        window.cancelAnimationFrame(animationFrameRef.current);
+      }
+      clearResumeTimer();
+    };
+  }, [autoPlayEnabled]);
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    pauseForInteraction();
+
+    if (event.pointerType === "mouse" && event.button === 0) {
+      const node = scrollerRef.current;
+      if (!node) return;
+
+      dragRef.current = {
+        active: true,
+        startX: event.clientX,
+        startScrollLeft: node.scrollLeft,
+      };
+      didDragRef.current = false;
+      setIsDragging(true);
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragRef.current.active || event.pointerType !== "mouse") return;
+
+    const node = scrollerRef.current;
+    if (!node) return;
+
+    const delta = event.clientX - dragRef.current.startX;
+    if (Math.abs(delta) > 5) didDragRef.current = true;
+    node.scrollLeft = dragRef.current.startScrollLeft - delta;
+  };
+
+  const finishPointerInteraction = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragRef.current.active) {
+      dragRef.current.active = false;
+      setIsDragging(false);
+
+      if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+        event.currentTarget.releasePointerCapture(event.pointerId);
+      }
+
+      recenterScroller();
+    }
+
+    resumeAfterInteraction();
+  };
 
   const handleOpenModal = (baseIndex: number) => {
     setSelectedIndex(baseIndex);
@@ -148,7 +309,17 @@ export function HistoricalTimeline() {
       }}
     >
       <Container maxWidth="lg">
-        <Box sx={{ mb: { xs: 4, md: 6 } }}>
+        <Box
+          sx={{
+            mb: { xs: 4, md: 6 },
+            display: "flex",
+            alignItems: { xs: "flex-start", sm: "flex-end" },
+            justifyContent: "space-between",
+            gap: 2.5,
+            flexWrap: "wrap",
+          }}
+        >
+          <Box sx={{ minWidth: 0 }}>
           <Typography
             variant="h3"
             sx={{
@@ -180,30 +351,122 @@ export function HistoricalTimeline() {
           >
             {content.hint}
           </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              alignItems: "center",
+              flexShrink: 0,
+            }}
+          >
+            <IconButton
+              aria-label={content.previous}
+              onClick={() => scrollTimeline(-1)}
+              sx={{
+                width: 44,
+                height: 44,
+                border: `1px solid ${tokens.color.line}`,
+                backgroundColor: tokens.color.warmWhite,
+                color: tokens.color.graphite,
+                "&:hover": {
+                  backgroundColor: tokens.color.hopeGoldPale,
+                  borderColor: tokens.color.hopeGold,
+                },
+              }}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+            <IconButton
+              aria-label={autoPlayEnabled ? content.pause : content.play}
+              onClick={() => {
+                setAutoPlayEnabled(current => !current);
+                interactionPausedRef.current = false;
+                clearResumeTimer();
+              }}
+              sx={{
+                width: 44,
+                height: 44,
+                border: `1px solid ${tokens.color.line}`,
+                backgroundColor: autoPlayEnabled
+                  ? tokens.color.graphite
+                  : tokens.color.warmWhite,
+                color: autoPlayEnabled
+                  ? tokens.color.hopeGold
+                  : tokens.color.graphite,
+                "&:hover": {
+                  backgroundColor: autoPlayEnabled
+                    ? tokens.color.graphiteDark
+                    : tokens.color.hopeGoldPale,
+                  borderColor: tokens.color.hopeGold,
+                },
+              }}
+            >
+              {autoPlayEnabled ? <PauseRoundedIcon /> : <PlayArrowRoundedIcon />}
+            </IconButton>
+            <IconButton
+              aria-label={content.next}
+              onClick={() => scrollTimeline(1)}
+              sx={{
+                width: 44,
+                height: 44,
+                border: `1px solid ${tokens.color.line}`,
+                backgroundColor: tokens.color.warmWhite,
+                color: tokens.color.graphite,
+                "&:hover": {
+                  backgroundColor: tokens.color.hopeGoldPale,
+                  borderColor: tokens.color.hopeGold,
+                },
+              }}
+            >
+              <ChevronRightIcon />
+            </IconButton>
+          </Box>
         </Box>
       </Container>
 
-      {/* Accessible horizontal timeline */}
-      <Box
-        sx={{
-          position: "relative",
-          width: "100%",
-          overflowX: "auto",
-          overflowY: "hidden",
-          py: 2,
-          px: { xs: 2, md: 4 },
-          scrollSnapType: "x mandatory",
-          WebkitOverflowScrolling: "touch",
-          scrollbarWidth: "thin",
-          scrollbarColor: `${tokens.color.hopeGold} transparent`,
-          "&::-webkit-scrollbar": { height: 8 },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: tokens.color.hopeGold,
-            borderRadius: 999,
-          },
-          "&::-webkit-scrollbar-track": { backgroundColor: "transparent" },
-        }}
-      >
+      {/* Living timeline: auto-moves, but immediately yields control to the user */}
+      <Box sx={{ position: "relative" }}>
+        <Box
+          aria-label={content.title}
+          ref={scrollerRef}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={finishPointerInteraction}
+          onPointerCancel={finishPointerInteraction}
+          onWheel={() => {
+            pauseForInteraction();
+            resumeAfterInteraction();
+          }}
+          onScroll={() => {
+            if (interactionPausedRef.current) {
+              window.requestAnimationFrame(recenterScroller);
+            }
+          }}
+          sx={{
+            position: "relative",
+            width: "100%",
+            overflowX: "auto",
+            overflowY: "hidden",
+            py: 2,
+            px: { xs: 2, md: 4 },
+            scrollSnapType: "x proximity",
+            WebkitOverflowScrolling: "touch",
+            overscrollBehaviorX: "contain",
+            touchAction: "pan-x pan-y",
+            cursor: { xs: "auto", md: isDragging ? "grabbing" : "grab" },
+            userSelect: isDragging ? "none" : "auto",
+            scrollbarWidth: "thin",
+            scrollbarColor: `${tokens.color.hopeGold} transparent`,
+            "&::-webkit-scrollbar": { height: 8 },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: tokens.color.hopeGold,
+              borderRadius: 999,
+            },
+            "&::-webkit-scrollbar-track": { backgroundColor: "transparent" },
+          }}
+        >
         <Box
           sx={{
             display: "flex",
@@ -221,14 +484,31 @@ export function HistoricalTimeline() {
             return (
               <Box
                 key={`${event.year}-${index}`}
-                onClick={() => handleOpenModal(baseIndex)}
+                role="button"
+                tabIndex={0}
+                aria-label={`${event.year}: ${title}`}
+                onClick={() => {
+                  if (!didDragRef.current) handleOpenModal(baseIndex);
+                  didDragRef.current = false;
+                }}
+                onKeyDown={eventKey => {
+                  if (eventKey.key === "Enter" || eventKey.key === " ") {
+                    eventKey.preventDefault();
+                    handleOpenModal(baseIndex);
+                  }
+                }}
                 sx={{
                   minWidth: { xs: 260, sm: 280, md: 300 },
                   maxWidth: { xs: 260, sm: 280, md: 300 },
                   flexShrink: 0,
                   py: 1,
-                  cursor: "pointer",
-                  scrollSnapAlign: "start",
+                  cursor: "inherit",
+                  scrollSnapAlign: "center",
+                  outline: "none",
+                  "&:focus-visible": {
+                    borderRadius: "22px",
+                    boxShadow: `0 0 0 3px ${tokens.color.hopeGold}`,
+                  },
                 }}
               >
                 <Box sx={{ position: "relative", mb: 2, pt: 1 }}>
@@ -338,6 +618,18 @@ export function HistoricalTimeline() {
             );
           })}
         </Box>
+        </Box>
+
+        <Box
+          aria-hidden="true"
+          sx={{
+            pointerEvents: "none",
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(90deg, rgba(251,246,234,0.94) 0%, rgba(251,246,234,0) 5%, rgba(251,246,234,0) 95%, rgba(251,246,234,0.94) 100%)",
+          }}
+        />
       </Box>
 
       {/* Modal con sintaxis JSX totalmente limpia */}
