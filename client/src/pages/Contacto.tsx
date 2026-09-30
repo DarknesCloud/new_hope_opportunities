@@ -9,7 +9,7 @@ import {
 import {
   Building2,
   CheckCircle2,
-  Clock3,
+  Phone,
   Mail,
   MapPin,
   Send,
@@ -114,32 +114,32 @@ const contactCopy: Record<"es" | "en", ContactCopy> = {
     },
     submit: "Send message",
     submitted: "Message sent successfully",
-    contactTitle: "Contact channels",
+    contactTitle: "Contact information",
     contactBody:
-      "We centralize requests to respond with order, traceability, and appropriate accompaniment for each partner type.",
+      "Reach New Hope Opportunities directly by location, phone, or email. For detailed requests, use the contact form and our team will follow up."
     cards: [
       {
-        title: "Foundations and partnerships",
-        body: "Strategic cooperation, institutional backing, and social investment opportunities.",
+        title: "Partnerships and foundations",
+        body: "Ask about institutional partnerships, sponsorship opportunities, and ways to support specific areas of the mission.",
       },
       {
-        title: "Donors and sponsorship",
-        body: "Guidance on monthly support, one-time donations, and impact story follow-up.",
+        title: "Donations and tax receipts",
+        body: "Get help with donations, receipt requests, and tax-related documentation when applicable.",
       },
       {
-        title: "Companies and volunteering",
-        body: "Corporate responsibility proposals, technical mentorship, and professional support.",
+        title: "Mission teams and volunteering",
+        body: "Contact our team about mission trips, volunteer opportunities, dates, lodging, and service planning.",
       },
     ],
-    trustTitle: "Trust signals",
+    trustTitle: "What you can request",
     trustItems: [
-      "Secure institutional communication",
-      "Request traceability",
-      "Tax support available when applicable",
-      "Financial and impact reports upon request",
+      "Program and participation information",
+      "Donation and receipt support",
+      "Mission trip and volunteer planning",
+      "Financial and impact reports",
     ],
     officeLabel: "Location",
-    responseLabel: "Response time",
+    responseLabel: "Phone",
     emailLabel: "Email",
   },
 };
@@ -510,7 +510,7 @@ export function Contacto() {
                   <Box
                     sx={{ display: "flex", gap: 1.4, alignItems: "flex-start" }}
                   >
-                    <Clock3
+                    <Phone
                       size={18}
                       color={tokens.color.hopeGold}
                       style={{ marginTop: 3 }}
