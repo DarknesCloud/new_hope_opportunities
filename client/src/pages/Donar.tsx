@@ -5,6 +5,7 @@ import { DonationGateway } from "@/components/DonationGateway";
 import { Footer } from "@/components/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { designTokens as tokens } from "@/theme/designTokens";
+import donateHero from "@/assets/photos/hero-hope.webp";
 
 const copy = {
   es: {
@@ -60,11 +61,78 @@ export function Donar() {
 
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: tokens.color.ivory }}>
-      <Box component="header" sx={{ position: "relative", overflow: "hidden", background: `linear-gradient(135deg, ${tokens.color.graphiteDark} 0%, ${tokens.color.graphite} 68%, ${tokens.color.hopeGoldDark} 160%)`, color: tokens.color.warmWhite }}>
-        <Container maxWidth="lg" sx={{ py: { xs: 7, md: 10 } }}>
+      <Box
+        component="header"
+        sx={{
+          position: "relative",
+          overflow: "hidden",
+          color: tokens.color.warmWhite,
+          backgroundImage: `
+            linear-gradient(
+              90deg,
+              rgba(20, 20, 20, 0.94) 0%,
+              rgba(26, 26, 26, 0.88) 36%,
+              rgba(26, 26, 26, 0.58) 64%,
+              rgba(26, 26, 26, 0.30) 100%
+            ),
+            linear-gradient(
+              180deg,
+              rgba(20, 20, 20, 0.14) 0%,
+              rgba(20, 20, 20, 0.38) 100%
+            ),
+            url(${donateHero})
+          `,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: { xs: "58% center", md: "center 44%" },
+          minHeight: { xs: 430, md: 470 },
+          display: "flex",
+          alignItems: "center",
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            background:
+              "linear-gradient(135deg, rgba(242,185,0,0.06) 0%, transparent 42%, rgba(242,185,0,0.10) 100%)",
+          },
+        }}
+      >
+        <Container
+          maxWidth="lg"
+          sx={{
+            position: "relative",
+            zIndex: 1,
+            py: { xs: 7, md: 10 },
+          }}
+        >
           <Box sx={{ display: "inline-flex", alignItems: "center", gap: 1, mb: 2, color: tokens.color.hopeGoldSoft }}><FavoriteRounded sx={{ fontSize: 18 }} /><Typography sx={{ fontSize: "0.78rem", fontWeight: 900, letterSpacing: "0.12em", textTransform: "uppercase" }}>{content.eyebrow}</Typography></Box>
-          <Typography component="h1" sx={{ maxWidth: 850, fontFamily: tokens.font.display, fontSize: { xs: "2.55rem", md: "4.25rem" }, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.055em", mb: 2.5 }}>{content.title}</Typography>
-          <Typography sx={{ maxWidth: 760, color: "rgba(255,255,255,0.76)", fontSize: { xs: "1rem", md: "1.12rem" }, lineHeight: 1.8 }}>{content.subtitle}</Typography>
+          <Typography
+            component="h1"
+            sx={{
+              maxWidth: { xs: 760, md: 820 },
+              fontFamily: tokens.font.display,
+              fontSize: { xs: "2.55rem", md: "4.25rem" },
+              fontWeight: 900,
+              lineHeight: 1,
+              letterSpacing: "-0.055em",
+              mb: 2.5,
+              textShadow: "0 4px 28px rgba(0,0,0,0.34)",
+            }}
+          >
+            {content.title}
+          </Typography>
+          <Typography
+            sx={{
+              maxWidth: 720,
+              color: "rgba(255,255,255,0.88)",
+              fontSize: { xs: "1rem", md: "1.12rem" },
+              lineHeight: 1.8,
+              textShadow: "0 2px 18px rgba(0,0,0,0.30)",
+            }}
+          >
+            {content.subtitle}
+          </Typography>
         </Container>
       </Box>
       <Box component="main" sx={{ flex: 1 }}>
